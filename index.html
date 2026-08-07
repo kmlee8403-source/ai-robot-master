@@ -206,6 +206,18 @@
       font-size: 0.82rem; font-weight: 800; display: inline-flex; align-items: center; gap: 0.4rem;
     }
 
+    /* Intuitive Analogy Box */
+    .analogy-box {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(236, 72, 153, 0.08));
+      border-left: 4px solid var(--accent-amber);
+      border-radius: 0 12px 12px 0; padding: 1rem 1.25rem; margin-bottom: 1.2rem;
+      font-size: 0.93rem; color: var(--text-main); line-height: 1.6;
+    }
+    .analogy-title {
+      font-weight: 800; color: var(--accent-amber); font-size: 0.95rem; margin-bottom: 0.3rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
     /* Visual Diagram Card Wrapper */
     .media-card-wrapper {
       background-color: var(--bg-card); border: 1px solid var(--border-color);
@@ -487,6 +499,13 @@
               인공지능 로봇을 만들기 위해서는 일반 PC처럼 거대하고 전기를 많이 먹는 컴퓨터 대신, <strong>손바닥 크기의 초소형·저전력 고성능 컴퓨터</strong>가 필요합니다. 라즈베리파이는 AI 로봇의 "두뇌" 역할을 담당하여 모터, 카메라, AI 가속기를 통합 제어합니다!
             </div>
 
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>로봇의 대뇌 오케스트라 지휘자</strong>: 라즈베리파이는 사람의 두뇌처럼 눈(카메라), 귀(거리 센서), 다리(모터) 신호를 한곳에 모아 명령을 내리는 초소형 지휘자입니다.<br>
+              • <strong>왜 최신 Bookworm OS(64bit)가 아닌 Bullseye OS(32bit)일까?</strong> 새로 나온 64비트 OS는 '신식 악보' 같아서 Google Coral TPU라는 '기존 베테랑 연주자'와 호흡이 맞지 않습니다. 반면 Bullseye 32비트는 오랫동안 수천 번 검증된 명품 지휘자라 에지 TPU 모듈과 한 치의 오차도 없이 호흡을 맞춥니다!
+            </div>
+
             <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> 라즈베리파이의 원리와 하드웨어 스펙</div>
             
             <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:0.8rem;">
@@ -576,6 +595,13 @@
               한 교실에서 20~30명의 학생들이 동시에 라즈베리파이를 켜면, 기본 이름(`raspberrypi`)이 같아서 <strong>서로 남의 로봇에 접속하는 혼선</strong>이 일어납니다! 본인의 라즈베리파이에 부여받은 교구 번호(`pi01`, `pi02` ...)를 명확하게 지정해야 내 로봇을 무선/유선으로 안전하게 제어할 수 있습니다.
             </div>
 
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>12자리 주민등록번호 vs 학급 명찰 (mDNS)</strong>: 로봇의 IP 주소(`192.168.137.x`)가 외우기 어려운 12자리 주민번호라면, `pi01.local`은 교실에서 서로를 부르는 친근한 '학급 명찰'입니다.<br>
+              • <strong>Imager 고급 옵션 (Ctrl+Shift+X)</strong>: 모니터나 키보드가 없는 헤드리스(Headless) 로봇에 미리 학생 명찰과 비밀번호 열쇠를 새겨넣어 부팅되자마자 알아서 교실 망에 접속하도록 만드는 사전 세팅 도구입니다.
+            </div>
+
             <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> 핵심 개념 요약</div>
             <ul class="theory-bullet-list">
               <li><strong>mDNS (Multicast DNS)</strong>: Complex한 숫자로 된 IP 주소 대신 `pi01.local` 처럼 쉬운 이름으로 로봇을 자동 찾아주는 네트워크 기술입니다.</li>
@@ -636,6 +662,12 @@
             <div class="motivation-box">
               로봇 개발 현장이나 모니터/키보드가 없는 외부 실습실에서는 <strong>"헤드리스(Headless) 원격 제어"</strong>를 사용합니다. 노트북과 로봇을 랜선 하나로 1:1 직접 연결하면 무선 와이파이 간섭 없이 가장 빠르고 안정적인 통신 망을 구축할 수 있습니다!
             </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>복잡한 사거리 vs 전용 고속도로 다리를 1:1로 뚫기</strong>: 무선 와이파이는 수십 명이 동시에 말을 걸어 차가 밀리는 신호등 사거리라면, 1:1 랜선 연결은 내 노트북과 로봇 사이를 일직선으로 이어주는 막힘없는 '전용 다리'입니다.
+            </div>
           </div>
 
           <div class="info-box">
@@ -667,6 +699,12 @@
             <div class="concept-heading"><i class="fa-solid fa-lightbulb" style="color: var(--accent-amber);"></i> 왜 이것을 배울까요? (Why Learn This?)</div>
             <div class="motivation-box">
               라즈베리파이가 무선 와이파이 안테나 없이도 인터넷 패키지(`apt install`)를 다운로드하고 내 노트북과 원활하게 통신하려면, <strong>노트북의 와이파이 인터넷을 랜선 어댑터로 공유(ICS)</strong>해줘야 합니다. 이렇게 하면 노트북 USB 어댑터 주소가 자동으로 <code>192.168.137.1</code>로 세팅됩니다!
+            </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>노트북의 인터넷 마중물 다리 (ICS)</strong>: 라즈베리파이에 안테나가 없어도, 노트북이 무선 와이파이 약수터에서 인터넷 신호를 떠온 뒤 랜선이라는 빨대로 로봇에게 나눠주는 '마중물 다리'입니다. 이 공유를 켜는 순간 윈도우가 어댑터 통로 번호를 `192.168.137.1`로 고정해 줍니다.
             </div>
           </div>
 
@@ -718,6 +756,12 @@
             <div class="motivation-box">
               인터넷 신호(Ping)를 통해 내 컴퓨터와 로봇이 연결되었는지 상태를 점검하는 통신 기초 검증입니다. <code>ping pi01.local</code> 명령으로 로봇의 응답 신호를 확인합니다!
             </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>야호~ 메아리 테스트 (Ping)</strong>: 산봉우리에서 "야호!" 하고 외치면 건너편 산에서 메아리가 돌아오듯, `ping pi01.local`은 내 노트북이 로봇에게 신호를 보낸 뒤 "나 여기 잘 살아있어!" 하고 응답을 되돌려받는지 확인하는 통신 건강검진입니다.
+            </div>
           </div>
 
           <div class="terminal-wrapper">
@@ -755,6 +799,13 @@ C:\Users\Student> <span class="cmd-keyword">ping</span> pi01.local -4
             <div class="concept-heading"><i class="fa-solid fa-lightbulb" style="color: var(--accent-amber);"></i> 왜 이것을 배울까요? (Why Learn This?)</div>
             <div class="motivation-box">
               PuTTY로 로봇에 접속한 뒤, 로봇 시스템 설정 파일(`dhcpcd.conf`)에 **고정 IP 주소(192.168.137.100)**를 등록하면 다음부터 부팅할 때마다 언제나 동일한 주소로 고속 접속할 수 있습니다!
+            </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>텔레파시 유령 조종실 (SSH)</strong>: SSH(Secure Shell)는 모니터나 키보드 선을 꽂지 않고도 암호화된 전파/유선망을 통해 로봇의 텍스트 뇌에 직접 명령을 전달하는 텔레파시 원격 조종기입니다.<br>
+              • <strong>100번지 문패 달기 (고정 IP)</strong>: 매번 부팅할 때마다 주소가 바뀌면 로봇을 찾아 헤매야 하므로, `/etc/dhcpcd.conf` 설정 파일에 '100번지 문패'를 대문짝만하게 박아두는 작업입니다.
             </div>
           </div>
 
@@ -819,6 +870,12 @@ nogateway
             <div class="motivation-box">
               <strong>VNC (Virtual Network Computing)</strong>는 로봇의 바탕화면, 이미지, 파이썬 코드 작성 창(Thonny IDE)을 내 노트북 화면에 그래픽(GUI) 그대로 전송받아 작업할 수 있게 해주는 원격 데스크톱 기술입니다.
             </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>실시간 빔프로젝터 (VNC)</strong>: SSH가 글자만 주고받는 전보기라면, VNC는 로봇 바탕화면과 파이썬 Thonny IDE 그래픽 화면을 내 노트북 모니터 유리창에 그대로 실시간 쏘아 중계해 주는 스마트 빔프로젝터입니다.
+            </div>
           </div>
 
           <!-- Procedure Item 5 -->
@@ -864,6 +921,15 @@ nogateway
               로봇 개발 현장에서는 마우스 클릭보다 터미널 텍스트 명령어(CLI)를 사용합니다! 시스템 패키지와 C/C++ 빌드 도구, 이미지/수치 연산 가속 라이브러리를 미리 설치해두면 향후 <strong>Build HAT 모터 제어 및 Coral TPU AI 영상 추론 시 연산 오차 없이 최적의 속도(30+ FPS)</strong>를 보장받을 수 있습니다.
             </div>
 
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>`sudo` = 학교 경비실 마스터키</strong>: 일반 학생 권한으로는 고칠 수 없는 리눅스 핵심 시스템이나 프로그램 설치 시 사용합니다.<br>
+              • <strong>`apt` = 24시간 무인 도서관/앱스토어</strong>: 원하는 프로그램 이름을 말하면 인터넷 서고에서 최신 책을 알아서 빌려와 설치해 줍니다.<br>
+              • <strong>C/C++ 빌드 도구 (`cmake`, `build-essential`)</strong>: 파이썬이라는 쉬운 언어 뒤에서 고속 C 언어 부품을 조립해 주는 '공장 주물 틀'입니다.<br>
+              • <strong>행렬 연산 가속 패키지 (`libopenblas-dev`)</strong>: 인공지능 딥러닝의 수천만 번 행렬 곱셈을 CPU 차원에서 가속해 주는 '전용 주산기'입니다.
+            </div>
+
             <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> 리눅스 운영체제의 구조와 핵심 개념</div>
             
             <div class="slide-grid-2col">
@@ -889,7 +955,7 @@ nogateway
           <!-- Procedure Item 4 Process Units -->
           <div class="process-unit-card">
             <div class="process-unit-header">
-              <div class="process-unit-title"><i class="fa-solid fa-arrows-rotate"></i> 4. 라즈베리파이 시스템 업데이트 & raspi-config 하드웨어 설정</div>
+              <div class="process-unit-title"><i class="fa-solid fa-arrows-rotate"></i> 4. 라즈베리파이 업데이트 & raspi-config 하드웨어 설정</div>
               <span class="manual-item-badge"><i class="fa-solid fa-list-check"></i> 절차서 4번 전체</span>
             </div>
 
@@ -937,7 +1003,7 @@ nogateway
             </div>
           </div>
 
-          <!-- NEW ENHANCEMENT: System Optimization & Dependencies with Clear Explanations -->
+          <!-- ENHANCEMENT: System Optimization & Dependencies with Clear Explanations -->
           <div class="process-unit-card" style="border-color: var(--accent-purple);">
             <div class="process-unit-header">
               <div class="process-unit-title" style="color: var(--accent-purple);">
@@ -1141,6 +1207,14 @@ nogateway
               라즈베리파이 자체의 일반 PIN(3.3V/5V)으로는 레고 모터 구동에 필요한 고전압(8V) 및 빠른 엔코더 측정 신호를 직접 다룰 수 없습니다. <strong>Build HAT</strong>은 이 두 세계를 이어주는 전용 스마트 변환 다리 역할을 수행합니다!
             </div>
 
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>로봇의 부지런한 척추 신경절 (Build HAT & RP2040)</strong>: 라즈베리파이 메인 CPU 두뇌가 모터 1도 회전까지 직접 신경 쓰면 뇌과부하가 걸립니다. Build HAT 보드에 내장된 RP2040 칩이 척추 신경절처럼 모터의 전기 신호와 엔코더 펄스를 전문적으로 전담 처리해 줍니다.<br>
+              • <strong>8V DC 외부 전원의 필요성</strong>: 라즈베리파이의 5V 전원이 두뇌용 감격 식사라면, 레고 모터를 힘차게 돌리기 위해서는 8V라는 강한 파워 음료수가 필요합니다.<br>
+              • <strong>`ls -l /dev/serial*` 디바이스 검증</strong>: 라즈베리파이와 Build HAT이 1:1로 비밀 귓속말을 나누는 '전용 실전화기 통로(`/dev/serial0`)'가 잘 연결되어 있는지 확인하는 절차입니다.
+            </div>
+
             <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> Build HAT 변환 메커니즘과 SPIKE 부품</div>
             
             <div class="slide-grid-2col">
@@ -1214,93 +1288,168 @@ nogateway
         </article>
       </div>
 
-      <!-- STEP 10: PYTHON BUILDHAT CONTROL -->
+      <!-- STEP 10: PYTHON BUILDHAT MOTOR & 4 SENSORS COMPLETE GUIDE -->
       <div class="step-panel" id="panel-10">
         <article class="step-card">
           <div class="step-badge-row">
             <div class="step-num-badge"><i class="fa-solid fa-code"></i> 10단계 / 12</div>
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-purple);">파이썬 모터 및 센서 프로그래밍</span>
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-purple);">Build HAT 모터 & 4대 센서 파이썬 완전 가이드</span>
           </div>
 
-          <h2 class="step-title">10장. 파이썬으로 LEGO SPIKE 모터 및 센서 제어 함수</h2>
+          <h2 class="step-title">10장. LEGO SPIKE 모터 및 4대 센서(거리·힘·컬러·엔코더) 완전 활용법</h2>
 
           <!-- Detailed Theory Card -->
           <div class="theory-concept-card">
             <div class="concept-heading"><i class="fa-solid fa-lightbulb" style="color: var(--accent-amber);"></i> 왜 이것을 배울까요? (Why Learn This?)</div>
             <div class="motivation-box">
-              파이썬 프로그래밍 코드를 통해 물리 세계의 로봇 모터를 움직이고, 센서로 환경 데이터를 읽어들입니다. 모터 내장 광학 엔코더의 각도 실시간 피드백(`get_position()`)으로 오차 없는 정밀 주행을 구현해봅니다.
+              로봇이 물리 세계에서 정교하게 주행하고 환경을 감지하려면 <strong>모터(다리) + 거리센서(초음파) + 힘센서(터치/압력) + 컬러센서(색상/반사광)</strong>의 4대 기본 부품의 역할과 파이썬 제어 코드를 각각 완벽히 숙지해야 합니다!
             </div>
 
-            <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> Build HAT 파이썬 모터 및 센서 제어 함수 명세</div>
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 부품별 역할 비유</div>
+              • <strong>모터 (`Motor`)</strong>: 로봇의 보폭과 속도를 1도(°) 단위로 정교하게 조절하는 '스마트 근육'.<br>
+              • <strong>거리 센서 (`DistanceSensor`)</strong>: 박쥐의 박쥐 초음파처럼 눈앞의 장애물 거리를 cm로 재는 '원거리 눈/귀'.<br>
+              • <strong>힘 센서 (`ForceSensor`)</strong>: 물리적 충돌이나 스위치 눌림의 세기를 뉴턴(N) 단위로 느끼는 '피부 감각'.<br>
+              • <strong>컬러 센서 (`ColorSensor`)</strong>: 빨강/초록/파랑 색상을 구분하고 바닥의 반사광 밝기(%)를 읽어 라인트레이서 선을 따라가는 '눈동자'.
+            </div>
+
+            <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> Build HAT 모터 & 4대 센서 핵심 함수 정리 명세표</div>
             
             <div class="data-table-wrapper">
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>구분</th>
-                    <th>함수 및 구문</th>
-                    <th>동작 설명 및 동작 예시</th>
+                    <th>부품 종류</th>
+                    <th>클래스 객체</th>
+                    <th>주요 파이썬 함수</th>
+                    <th>반환 값 및 동작 역할</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>지속 회전</strong></td>
-                    <td><code>motor.run(speed)</code></td>
-                    <td>속도(-100 ~ 100)로 지속 회전 (`motor.stop()` 명령 전까지 계속 회전)</td>
+                    <td><strong>SPIKE 모터</strong></td>
+                    <td><code>Motor('A')</code></td>
+                    <td><code>run_for_degrees(360, speed=50)</code><br><code>get_position()</code></td>
+                    <td>지정한 각도(°)만큼 회전<br>내장 광학 엔코더의 현재 각도(-180°~180°) 피드백</td>
                   </tr>
                   <tr>
-                    <td><strong>시간 회전</strong></td>
-                    <td><code>motor.run_for_seconds(초, speed)</code></td>
-                    <td>지정한 초 동안 회전 후 자동 정지 (예: `run_for_seconds(3, speed=70)`)</td>
+                    <td><strong>주행 모터 쌍</strong></td>
+                    <td><code>MotorPair('A', 'B')</code></td>
+                    <td><code>start(speedl=30, speedr=30)</code><br><code>stop()</code></td>
+                    <td>좌/우 2개 모터를 구동하여 차동 주행(Differential Drive) 직진/회전<br>양쪽 모터 동시 안전 정지</td>
                   </tr>
                   <tr>
-                    <td><strong>각도 회전</strong></td>
-                    <td><code>motor.run_for_degrees(각도, speed)</code></td>
-                    <td>지정한 각도(°)만큼 회전 (예: `360`=1바퀴, `180`=반 바퀴)</td>
+                    <td><strong>거리 센서</strong></td>
+                    <td><code>DistanceSensor('C')</code></td>
+                    <td><code>get_distance()</code><br><code>on() / off()</code></td>
+                    <td>앞 장애물과의 거리를 센티미터(cm) 수치로 반환 (4~200cm)<br>센서 눈동자 LED 켜기/끄기</td>
                   </tr>
                   <tr>
-                    <td><strong>엔코더 각도 읽기</strong></td>
-                    <td><code>motor.get_position()</code></td>
-                    <td>모터의 모터축 현재 각도(-180° ~ 180°) 정밀 측정 피드백</td>
+                    <td><strong>힘 센서</strong></td>
+                    <td><code>ForceSensor('D')</code></td>
+                    <td><code>is_pressed</code><br><code>get_force()</code></td>
+                    <td>버튼이 눌렸는지 여부 (True / False 이진 판단)<br>눌린 힘의 세기를 뉴턴(0N ~ 10N) 수치로 반환</td>
                   </tr>
                   <tr>
-                    <td><strong>모터 정지 옵션</strong></td>
-                    <td><code>motor.stop(stop_action="...")</code></td>
-                    <td><code>"brake"</code>: 즉시 급정거 | <code>"coast"</code>: 관성으로 자연스럽게 정지</td>
-                  </tr>
-                  <tr>
-                    <td><strong>거리센서 측정</strong></td>
-                    <td><code>dist.get_distance()</code></td>
-                    <td>감지된 장애물과의 거리를 cm 단위 수치로 반환 (예: `12.5` cm)</td>
+                    <td><strong>컬러 센서</strong></td>
+                    <td><code>ColorSensor('B')</code></td>
+                    <td><code>get_color()</code><br><code>get_reflected_light()</code></td>
+                    <td>감지된 색상 이름 문자열 반환 (`'red'`, `'blue'`, `'black'`...)<br>바닥에 빛을 쏘아 반사되는 밝기 퍼센트(0%~100%) 반환 (라인트레이서)</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div class="terminal-wrapper">
-            <div class="terminal-header">
-              <span class="terminal-title">python - test_motor_and_sensor.py</span>
-              <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          <!-- Component 1: Motor & MotorPair -->
+          <div class="process-unit-card">
+            <div class="process-unit-header">
+              <div class="process-unit-title"><i class="fa-solid fa-gears"></i> 1. 모터(Motor) & 주행 모터 쌍(MotorPair) 제어</div>
+              <span class="manual-item-badge"><i class="fa-solid fa-code"></i> Python 기초 모터</span>
             </div>
-            <div class="terminal-body">
-              <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> Motor, DistanceSensor
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">python - test_motors.py</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> Motor, MotorPair
 <span class="cmd-keyword">import</span> time
 
+<span class="cmd-comment"># 단일 모터 A포트 정의</span>
 motor_a = Motor(<span class="cmd-string">'A'</span>)
-dist_sensor = DistanceSensor(<span class="cmd-string">'C'</span>)
 
-dist_sensor.on()
-motor_a.run(<span class="cmd-arg">50</span>)
+<span class="cmd-comment"># 1바퀴(360도) 속도 50으로 회전</span>
+motor_a.run_for_degrees(<span class="cmd-arg">360</span>, speed=<span class="cmd-arg">50</span>)
+<span class="cmd-keyword">print</span>(f<span class="cmd-string">"모터 엔코더 현재 각도: {motor_a.get_position()}°"</span>)
+
+<span class="cmd-comment"># 주행용 좌/우 모터 쌍(A포트, B포트) 동기화</span>
+wheels = MotorPair(<span class="cmd-string">'A'</span>, <span class="cmd-string">'B'</span>)
+wheels.start(speedl=<span class="cmd-arg">40</span>, speedr=<span class="cmd-arg">40</span>) <span class="cmd-comment"># 직진</span>
+time.sleep(<span class="cmd-arg">2</span>)
+wheels.stop()</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 2: Distance & Force Sensor -->
+          <div class="process-unit-card">
+            <div class="process-unit-header">
+              <div class="process-unit-title"><i class="fa-solid fa-wave-square"></i> 2. 거리 센서(Distance) & 힘 센서(Force) 제어</div>
+              <span class="manual-item-badge"><i class="fa-solid fa-code"></i> Python 환경 센서</span>
+            </div>
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">python - test_distance_and_force.py</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> DistanceSensor, ForceSensor
+<span class="cmd-keyword">import</span> time
+
+dist_sensor = DistanceSensor(<span class="cmd-string">'C'</span>)
+force_sensor = ForceSensor(<span class="cmd-string">'D'</span>)
+
+dist_sensor.on() <span class="cmd-comment"># 초음파 눈동자 LED ON</span>
 
 <span class="cmd-keyword">for</span> _ <span class="cmd-keyword">in</span> range(<span class="cmd-arg">10</span>):
-    current_pos = motor_a.get_position()
-    current_dist = dist_sensor.get_distance()
-    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"[엔코더 각도]: {current_pos}° | [장애물 거리]: {current_dist}cm"</span>)
-    time.sleep(<span class="cmd-arg">0.3</span>)
+    dist = dist_sensor.get_distance()
+    pressed = force_sensor.is_pressed
+    force_n = force_sensor.get_force()
+    
+    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"📏 [거리]: {dist}cm | 🔘 [눌림여부]: {pressed} | 💥 [눌린 힘]: {force_n} N"</span>)
+    time.sleep(<span class="cmd-arg">0.5</span>)
 
-motor_a.stop(stop_action=<span class="cmd-string">"brake"</span>)
 dist_sensor.off()</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 3: Color Sensor -->
+          <div class="process-unit-card">
+            <div class="process-unit-header">
+              <div class="process-unit-title"><i class="fa-solid fa-palette"></i> 3. 컬러 센서(ColorSensor - 색상 및 반사광) 제어</div>
+              <span class="manual-item-badge"><i class="fa-solid fa-code"></i> Python 비전 센서</span>
+            </div>
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">python - test_color_sensor.py</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> ColorSensor
+<span class="cmd-keyword">import</span> time
+
+color_sensor = ColorSensor(<span class="cmd-string">'B'</span>)
+
+<span class="cmd-keyword">for</span> _ <span class="cmd-keyword">in</span> range(<span class="cmd-arg">10</span>):
+    detected_color = color_sensor.get_color()
+    reflected = color_sensor.get_reflected_light()
+    
+    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"🎨 [감지 색상]: {detected_color} | 💡 [바닥 반사광 밝기]: {reflected}%"</span>)
+    time.sleep(<span class="cmd-arg">0.5</span>)</pre>
+              </div>
             </div>
           </div>
 
@@ -1324,7 +1473,7 @@ dist_sensor.off()</pre>
         </article>
       </div>
 
-      <!-- STEP 11: CAMERA & OPENCV & CORAL TPU (PROCEDURE ITEMS 6, 7, 8, 11, 12, 13) -->
+      <!-- STEP 11: CAMERA & OPENCV & CORAL TPU & TEACHABLE MACHINE -->
       <div class="step-panel" id="panel-11">
         <article class="step-card">
           <div class="step-badge-row">
@@ -1332,7 +1481,7 @@ dist_sensor.off()</pre>
             <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-purple);">AI 비전 카메라 & TPU 가속기 설정</span>
           </div>
 
-          <h2 class="step-title">11장. 카메라 V2 & OpenCV 비전 라이브러리 & Google Coral TPU AI 가속기</h2>
+          <h2 class="step-title">11장. 카메라 V2 & OpenCV & Google Coral TPU & 티처블 머신 모델 연동</h2>
 
           <!-- Visual Diagram Card -->
           <div class="media-card-wrapper">
@@ -1347,6 +1496,14 @@ dist_sensor.off()</pre>
             <div class="concept-heading"><i class="fa-solid fa-lightbulb" style="color: var(--accent-amber);"></i> 왜 이것을 배울까요? (Why Learn This?)</div>
             <div class="motivation-box">
               로봇이 시각 정보(카메라)를 얻고 딥러닝 인공신경망(Coral TPU)을 통해 실시간 사물을 인식하는 AI 연산 원리를 배웁니다!
+            </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>OpenCV = 투시 안경과 스마트 가위</strong>: 카메라가 찍은 그림을 숫자 행렬(Matrix) 데이터로 바꾸어 색상, 얼굴, 선을 빠르고 정교하게 가위질해 내는 인공 시각 가위입니다.<br>
+              • <strong>CPU vs GPU vs NPU vs TPU</strong>: CPU가 다재다능한 교실 선생님 1명이라면, GPU는 미술시간에 나눠서 색칠하는 조원들, TPU는 인공신경망 행렬 곱셈만 전담하여 초당 20+ FPS로 연산해내는 'AI 전용 수학 천재 암산기'입니다.<br>
+              • <strong>Quantization (양자화/정수 압축)</strong>: 소수점 단어 `3.14159265...` (32비트)를 `0 ~ 255` 정수 (8비트)로 가볍게 압축하여 AI 연산 속도를 10배 끌어올리는 스마트 압축 요약 기술입니다.
             </div>
 
             <div class="concept-heading" style="color: var(--accent-cyan);"><i class="fa-solid fa-graduation-cap"></i> AI 카메라 모듈과 TPU AI 가속기의 원리</div>
@@ -1410,6 +1567,103 @@ dist_sensor.off()</pre>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <!-- NEW SECTION: TEACHABLE MACHINE TO CORAL TPU PIPELINE -->
+          <div class="process-unit-card" style="border-color: var(--accent-pink);">
+            <div class="process-unit-header">
+              <div class="process-unit-title" style="color: var(--accent-pink);">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> [특화 실습] 구글 티처블 머신(Teachable Machine) ➔ Coral Edge TPU 변환 및 파이썬 연동 가이드
+              </div>
+              <span class="manual-item-badge" style="background-color:rgba(236, 72, 153, 0.15); border-color:var(--accent-pink); color:var(--accent-pink);">
+                <i class="fa-solid fa-brain"></i> 커스텀 AI 모델
+              </span>
+            </div>
+
+            <div class="info-box" style="margin-bottom:1rem;">
+              <strong>🎓 티처블 머신 AI 모델을 Coral TPU로 옮기는 4단계 파이프라인:</strong><br>
+              1. <strong>티처블 머신(https://teachablemachine.withgoogle.com/)</strong>에서 이미지 학습 진행<br>
+              2. <strong>Export Model ➔ TensorFlow Lite (Quantized INT8)</strong> 다운로드 (`model.tflite`, `labels.txt`)<br>
+              3. 라즈베리파이 터미널에서 <strong>Edge TPU 컴파일러(`edgetpu_compiler`)</strong>로 Coral 전용 바이트코드(`model_edgetpu.tflite`) 컴파일<br>
+              4. `pycoral` 파이썬 코드로 로드하여 실시간 카메라 30+ FPS 추론 적용!
+            </div>
+
+            <!-- Pipeline Command 1: Compiler Install -->
+            <h4 style="font-size:0.95rem; font-weight:800; color:var(--accent-cyan); margin: 0.8rem 0 0.4rem 0;">
+              1) Edge TPU 컴파일러 설치
+            </h4>
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">sudo apt-get install edgetpu-compiler</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-prompt">pi@pi01:~ $</span><span class="cmd-keyword">sudo</span> apt-get install edgetpu-compiler</pre>
+              </div>
+            </div>
+
+            <!-- Pipeline Command 2: Model Compile -->
+            <h4 style="font-size:0.95rem; font-weight:800; color:var(--accent-cyan); margin: 1.2rem 0 0.4rem 0;">
+              2) 다운로드한 TFLite 양자화 모델을 Edge TPU 전용 모델로 컴파일
+            </h4>
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">edgetpu_compiler model.tflite</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-prompt">pi@pi01:~ $</span>edgetpu_compiler model.tflite
+<span class="cmd-comment"># ➔ 결과 파일: 'model_edgetpu.tflite' 변환 생성 완료!</span></pre>
+              </div>
+            </div>
+
+            <!-- Pipeline Command 3: Python Execution Code -->
+            <h4 style="font-size:0.95rem; font-weight:800; color:var(--accent-cyan); margin: 1.2rem 0 0.4rem 0;">
+              3) PyCoral로 커스텀 티처블 머신 모델을 실시간 카메라로 실습
+            </h4>
+            <div class="terminal-wrapper">
+              <div class="terminal-header">
+                <span class="terminal-title">python - run_teachable_machine_coral.py</span>
+                <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="cmd-keyword">from</span> pycoral.utils.edgetpu <span class="cmd-keyword">import</span> make_interpreter
+<span class="cmd-keyword">from</span> pycoral.adapters <span class="cmd-keyword">import</span> common, classify
+<span class="cmd-keyword">import</span> cv2
+
+<span class="cmd-comment"># 1. Edge TPU로 컴파일된 티처블 머신 모델 및 라벨 로드</span>
+model_file = <span class="cmd-string">'model_edgetpu.tflite'</span>
+labels_file = <span class="cmd-string">'labels.txt'</span>
+
+interpreter = make_interpreter(model_file)
+interpreter.allocate_tensors()
+
+<span class="cmd-comment"># 2. 라벨 텍스트 가공</span>
+with open(labels_file, <span class="cmd-string">'r'</span>, encoding=<span class="cmd-string">'utf-8'</span>) <span class="cmd-keyword">as</span> f:
+    labels = {i: line.strip() <span class="cmd-keyword">for</span> i, line <span class="cmd-keyword">in</span> enumerate(f.readlines())}
+
+<span class="cmd-comment"># 3. 카메라 프레임 실시간 TPU 추론</span>
+cap = cv2.VideoCapture(<span class="cmd-arg">0</span>)
+<span class="cmd-keyword">while</span> cap.isOpened():
+    ret, frame = cap.read()
+    <span class="cmd-keyword">if</span> <span class="cmd-keyword">not</span> ret: <span class="cmd-keyword">break</span>
+    
+    <span class="cmd-comment"># 모델 입력 크기(예: 224x224)로 리사이즈 및 전처리</span>
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    resized_frame = cv2.resize(rgb_frame, (<span class="cmd-arg">224</span>, <span class="cmd-arg">224</span>))
+    
+    common.set_input(interpreter, resized_frame)
+    interpreter.invoke()
+    
+    results = classify.get_classes(interpreter, top_k=<span class="cmd-arg">1</span>)
+    <span class="cmd-keyword">for</span> obj <span class="cmd-keyword">in</span> results:
+        label_text = labels.get(obj.id, <span class="cmd-string">'Unknown'</span>)
+        score = obj.score
+        <span class="cmd-keyword">print</span>(f<span class="cmd-string">"🤖 [AI 인식 결과]: {label_text} ({score*100:.1f}%)"</span>)
+
+cap.release()</pre>
+              </div>
             </div>
           </div>
 
@@ -1601,6 +1855,12 @@ dist_sensor.off()</pre>
             <div class="concept-heading"><i class="fa-solid fa-lightbulb" style="color: var(--accent-amber);"></i> 왜 이것을 배울까요? (Why Learn This?)</div>
             <div class="motivation-box">
               우리가 만든 로봇이 <strong>시각(Coral TPU AI 카메라) + 환경감지(초음파 거리) + 물리충돌(힘센서)</strong> 데이터 신호를 통합 판단하는 **센서 퓨전(Sensor Fusion) 제어 알고리즘**을 완성합니다!
+            </div>
+
+            <!-- Intuitive Analogy Box -->
+            <div class="analogy-box">
+              <div class="analogy-title"><i class="fa-solid fa-graduation-cap"></i> 💡 고등학생을 위한 쉬운 개념 비유</div>
+              • <strong>오감 통합 대뇌 피질 (Sensor Fusion)</strong>: 눈(Coral TPU 카메라)으로 장애물의 정체를 알아채고, 손/귀(초음파 거리 센서)로 남은 거리를 재며, 피부(힘 센서)로 충돌을 느껴 스스로 판단하여 안전하게 후진하고 우회하는 똑똑한 자율주행 알고리즘입니다!
             </div>
           </div>
 
