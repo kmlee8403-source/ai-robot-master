@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>온디바이스 AI & 엣지 AI 개념 이론 마스터 - AI 로봇 마스터 과정</title>
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --bg-box-inner: rgba(15, 23, 42, 0.6);
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+      --hero-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      --table-th-bg: rgba(56, 189, 248, 0.15);
+      --table-td-bg: rgba(15, 23, 42, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-box-inner: #f8fafc;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #334155;
+      --text-dim: #64748b;
+      --border-color: #cbd5e1;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      --accent-cyan: #0284c7;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --accent-pink: #db2777;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --hero-gradient: linear-gradient(135deg, #e2e8f0, #ffffff);
+      --table-th-bg: rgba(2, 132, 199, 0.12);
+      --table-td-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.7;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    /* Top Sticky Header */
+    .top-nav-header {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+    }
+
+    .top-nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+
+    .brand-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+      color: var(--text-main); text-decoration: none;
+    }
+    .brand-logo i { color: var(--accent-cyan); font-size: 1.4rem; }
+
+    .nav-links { display: flex; align-items: center; gap: 1rem; }
+
+    .btn-nav-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 1.2rem; border-radius: 10px; font-size: 0.88rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-portal { background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); }
+    .btn-portal:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px); }
+
+    .theme-toggle-btn {
+      background: none; border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.45rem 0.8rem; border-radius: 8px;
+      cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    /* Hero Banner */
+    .theory-hero {
+      background: var(--hero-gradient);
+      border: 1px solid var(--border-color); border-radius: 24px;
+      padding: 3rem 2.5rem; margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-lg); text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .theory-hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 1.2rem; border-radius: 20px;
+      background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-green);
+      color: var(--accent-green); font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;
+    }
+
+    .theory-hero-title {
+      font-size: 2.4rem; font-weight: 900; line-height: 1.35; margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .theory-hero-sub {
+      font-size: 1.1rem; color: var(--text-muted); max-width: 800px; margin: 0 auto;
+    }
+
+    /* Section Cards */
+    .theory-section {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 2.5rem; margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-lg); transition: border-color 0.3s;
+    }
+
+    .theory-section:hover { border-color: rgba(56, 189, 248, 0.4); }
+
+    .section-num-tag {
+      display: inline-block; font-size: 0.85rem; font-weight: 800;
+      color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-title i { color: var(--accent-cyan); }
+
+    .content-paragraph {
+      font-size: 1.02rem; color: var(--text-muted); margin-bottom: 1.4rem; line-height: 1.8;
+    }
+
+    .highlight-text { color: var(--text-main); font-weight: 700; }
+
+    /* Concept 2-Column Grid */
+    .concept-grid-2col {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;
+    }
+
+    .concept-card {
+      background-color: var(--bg-box-inner); border: 1px solid var(--border-color);
+      border-radius: 14px; padding: 1.4rem; transition: transform 0.2s;
+    }
+    .concept-card:hover { transform: translateY(-2px); border-color: var(--accent-cyan); }
+
+    .concept-card h4 {
+      color: var(--accent-cyan); font-size: 1.05rem; font-weight: 800; margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .concept-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* Tables */
+    .data-table-wrapper { overflow-x: auto; margin: 1.5rem 0; border-radius: 12px; border: 1px solid var(--border-color); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; }
+    .data-table th {
+      background-color: var(--table-th-bg); color: var(--accent-cyan);
+      padding: 0.9rem 1.2rem; font-weight: 800; border-bottom: 1px solid var(--border-color);
+    }
+    .data-table td {
+      padding: 0.85rem 1.2rem; border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted); background-color: var(--table-td-bg);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background-color: var(--bg-card-hover); }
+
+    .badge-status {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.78rem; font-weight: 800;
+    }
+    .badge-no { background-color: rgba(236, 72, 153, 0.2); color: var(--accent-pink); }
+    .badge-hard { background-color: rgba(245, 158, 11, 0.2); color: var(--accent-amber); }
+    .badge-yes { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+
+    /* Code Box */
+    .code-box {
+      background-color: var(--bg-terminal); border-radius: 12px; border: 1px solid var(--border-color);
+      padding: 1.2rem 1.4rem; margin: 1.2rem 0; font-family: var(--font-code); font-size: 0.88rem;
+      line-height: 1.6; color: #f8fafc; overflow-x: auto;
+    }
+
+    .tip-box {
+      background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--accent-amber);
+      padding: 1.2rem 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0;
+      font-size: 0.95rem; color: var(--text-main); line-height: 1.7;
+    }
+
+    .trend-pill {
+      display: inline-block; background-color: rgba(56, 189, 248, 0.15); color: var(--accent-cyan);
+      font-size: 0.8rem; font-weight: 800; padding: 0.25rem 0.7rem; border-radius: 14px; margin-right: 0.5rem;
+    }
+
+    footer { border-top: 1px solid var(--border-color); padding-top: 2rem; text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-nav-header">
+    <div class="top-nav-inner">
+      <a href="index.html" class="brand-logo">
+        <i class="fa-solid fa-robot"></i> AI Robot Master
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="btn-nav-link btn-portal">
+          <i class="fa-solid fa-sliders"></i> 12단계 실습 플레이어 이동
+        </a>
+        <button class="theme-toggle-btn" id="themeToggleBtn">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero Header Banner -->
+    <div class="theory-hero">
+      <div class="theory-hero-badge">
+        <i class="fa-solid fa-book-bookmark"></i> 개념 이론 마스터 교재
+      </div>
+      <h1 class="theory-hero-title">온디바이스 AI & 엣지 AI 이론 완벽 가이드</h1>
+      <p class="theory-hero-sub">
+        왜 미래의 모든 인공지능 로봇과 산업 장비는 클라우드가 아닌 "기기 자체(On-Device)"에서 딥러닝 연산을 수행해야 할까요? 수치와 현장 사례로 완벽히 정복합니다.
+      </p>
+    </div>
+
+    <!-- PART 1: 온디바이스 AI란 무엇인가 -->
+    <section class="theory-section" id="part1">
+      <span class="section-num-tag">Chapter 01</span>
+      <h2 class="section-title"><i class="fa-solid fa-microchip"></i> 1. 온디바이스 AI(On-device AI)란 무엇인가?</h2>
+
+      <p class="content-paragraph">
+        <span class="highlight-text">온디바이스 AI(On-device AI)</span>는 AI 모델의 추론(inference) 연산을 멀리 떨어진 클라우드 서버가 아닌 <span class="highlight-text">기기(device) 자체에서 직접 수행하는 방식</span>입니다. 스마트폰의 안면 인식(Face ID), 자동차의 차선 이탈 경고, 스마트 스피커의 음성 인식이 모두 대표적인 온디바이스 AI의 사례입니다.
+      </p>
+
+      <div class="concept-grid-2col">
+        <div class="concept-card">
+          <h4><i class="fa-solid fa-mobile-screen-button"></i> 스마트폰 온디바이스 AI</h4>
+          <p>아이폰 Neural Engine, 갤럭시 Snapdragon NPU에서 1~5ms 안으로 인공신경망 추론 완료. 인터넷 없이 얼굴 인증 및 사진 보정 수행.</p>
+        </div>
+        <div class="concept-card">
+          <h4><i class="fa-solid fa-car"></i> 첨단 운전자 보조 (ADAS)</h4>
+          <p>차량 내부 온디바이스 AI가 실시간 프레임을 분석하여 차선 이탈 및 보행자 충돌 위험 시 수 밀리초 내에 비상 브레이크 작동.</p>
+        </div>
+      </div>
+
+      <p class="content-paragraph" style="margin-top: 1rem;">
+        <span class="highlight-text">엣지 AI(Edge AI)</span>는 온디바이스 AI의 상위 개념으로, 데이터가 발생하는 "엣지(edge)" — 즉 네트워크의 말단인 현장 기기, 센서, 게이트웨이 — 에서 AI를 실행하는 모든 형태를 포함합니다. 스마트폰 NPU, NVIDIA Jetson 계열, 산업용 임베디드 PC, 스마트 카메라, 마이크로컨트롤러(TinyML), 라즈베리파이 등이 모두 엣지 AI 플랫폼으로 사용됩니다.
+      </p>
+
+      <div class="tip-box">
+        📌 <strong>이 교재의 교육 범위:</strong> 본 로봇 과정은 스마트폰, 라즈베리파이, Jetson, TinyML 등 모든 엣지 디바이스에 통용되는 비전 AI 모델 및 알고리즘 원리를 다루며, 최종적으로 라즈베리파이 + BuildHAT + Coral TPU 타겟 노드에 실시간 이식·운영하는 완벽한 파이프라인을 완성합니다.
+      </div>
+    </section>
+
+    <!-- PART 2: 클라우드 AI vs 엣지/온디바이스 AI -->
+    <section class="theory-section" id="part2">
+      <span class="section-num-tag">Chapter 02</span>
+      <h2 class="section-title"><i class="fa-solid fa-cloud-sun"></i> 2. 클라우드 AI vs 엣지 / 온디바이스 AI</h2>
+
+      <p class="content-paragraph">
+        두 방식의 가장 큰 차이는 <span class="highlight-text">"어디서 AI 연산을 수행하느냐"</span>입니다. 클라우드 AI는 데이터센터의 강력한 GPU 서버에서 연산하지만 데이터 왕복 지연이 발생하고, 온디바이스 AI는 제한된 로컬 자원으로 연산하지만 즉각적인 초저지연 응답이 가능합니다.
+      </p>
+
+      <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--accent-cyan); margin: 1.5rem 0 10px 0;">
+        🏢 현장에서 엣지 AI가 필수적인 4대 주요 산업 현장
+      </h3>
+
+      <div class="concept-grid-2col">
+        <div class="concept-card">
+          <h4>🏭 1. 제조·품질 검사 현장</h4>
+          <p>
+            고속 컨베이어 벨트에서 분당 수십~수백 개 제품의 불량을 판단하는 허용 시간은 <strong>수십 밀리초(ms)</strong>에 불과합니다. 이미지를 클라우드로 전송하고 결과를 받아오는 왕복 지연시간은 이 요구사항을 결코 충족할 수 없습니다.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>🌾 2. 스마트팜·원격 농업 환경</h4>
+          <p>
+            비닐하우스 내부 작물 병해충 감지 및 생육 모니터링은 LTE/와이파이 신호가 불안정한 산간 농촌 지역에서 동작합니다. 인터넷 연결이 끊겨도 AI가 24시간 독립 작동해야 하므로 엣지 AI가 필수입니다.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>🚦 3. 교통·안전 인프라</h4>
+          <p>
+            교차로 신호 최적화, 과속 차량 감지, 보행자 안전 모니터링은 수백 대의 카메라에서 막대한 영상 데이터를 발생시킵니다. 전송 대역폭 비용을 줄이기 위해 카메라 엣지에서 1차 처리 후 수치 결과만 전송합니다.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>🏥 4. 의료·헬스케어</h4>
+          <p>
+            내시경, CT, MRI AI 분석 시 환자 개인정보를 외부 클라우드로 전송하는 데 엄격한 법적·윤리적 제약이 따릅니다. 병원 내부 온디바이스 AI는 데이터를 외부 유출 없이 실시간 보조 진단합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PART 3: 엣지에서 로컬 추론이 필요한 5가지 핵심 이유 (수치 분석) -->
+    <section class="theory-section" id="part3">
+      <span class="section-num-tag">Chapter 03</span>
+      <h2 class="section-title"><i class="fa-solid fa-calculator"></i> 3. 엣지에서 로컬 추론이 필요한 5가지 수치 분석</h2>
+
+      <p class="content-paragraph">
+        엣지 AI가 단순히 유행이 아닌 실질적 필요에서 나온 기술임을 이해하려면, 클라우드 AI가 해결하지 못하는 구체적인 문제들을 수치와 함께 살펴봐야 합니다.
+      </p>
+
+      <!-- 1. Latency -->
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-top: 1.5rem;">
+        ① 지연시간(Latency): 실시간 제어와 안전
+      </h3>
+      <p class="content-paragraph">
+        클라우드 추론의 총 지연 = <code>[네트워크 업로드] + [클라우드 큐 대기] + [서버 추론] + [다운로드] + [앱 처리]</code><br>
+        국내 일반 LTE 환경에서 100KB JPEG 이미지 한 장의 왕복 지연은 평균 <strong>150~400ms</strong>입니다. 와이파이 환경에서도 50~150ms 이하를 기대하기 어렵습니다.
+      </p>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>애플리케이션</th>
+              <th>허용 지연시간</th>
+              <th>클라우드 AI 적용 가능 여부</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>자율주행 충돌 회피</strong></td>
+              <td>&lt; 5ms</td>
+              <td><span class="badge-status badge-no">불가</span></td>
+            </tr>
+            <tr>
+              <td><strong>산업용 로봇 제어</strong></td>
+              <td>&lt; 10ms</td>
+              <td><span class="badge-status badge-no">불가</span></td>
+            </tr>
+            <tr>
+              <td><strong>제조 라인 불량 검출</strong></td>
+              <td>&lt; 50ms</td>
+              <td><span class="badge-status badge-hard">매우 어려움</span></td>
+            </tr>
+            <tr>
+              <td><strong>실시간 영상 감시</strong></td>
+              <td>&lt; 100ms</td>
+              <td><span class="badge-status badge-hard">조건부 가능</span></td>
+            </tr>
+            <tr>
+              <td><strong>스마트홈 음성 명령</strong></td>
+              <td>&lt; 300ms</td>
+              <td><span class="badge-status badge-yes">가능 (클라우드 활용 중)</span></td>
+            </tr>
+            <tr>
+              <td><strong>배치 이미지 분류</strong></td>
+              <td>수 초 이내</td>
+              <td><span class="badge-status badge-yes">가능</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2. Offline Fallback Code -->
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-top: 1.8rem;">
+        ② 네트워크 연결 불안정/불가 환경과 오프라인 우선 설계
+      </h3>
+      <p class="content-paragraph">
+        농촌 산간 비닐하우스, 해상 선박, 지하 터널, 재난 현장에서는 인터넷이 끊겨도 엣지 AI가 독립 작동해야 합니다.
+      </p>
+
+      <div class="code-box">
+<span class="cmd-comment"># 엣지 AI의 오프라인 우선(Offline-First) 설계 파이썬 구조</span>
+<span class="cmd-keyword">def</span> <span class="cmd-arg">edge_ai_with_fallback</span>(image):
+    <span class="cmd-comment"># 1단계: 인터넷 연결 여부와 관계없이 항상 로컬 엣지 AI 추론 실행 (100% 작동 보장)</span>
+    local_result = local_model.predict(image)
+
+    <span class="cmd-comment"># 2단계: 네트워크가 연결되어 있을 때만 결과 수치(JSON)만 클라우드 전송</span>
+    <span class="cmd-keyword">if</span> is_network_available():
+        <span class="cmd-keyword">try</span>:
+            sync_result_to_cloud(local_result)  <span class="cmd-comment"># 이미지가 아닌 결과 수치만 전송</span>
+        <span class="cmd-keyword">except</span> Exception:
+            queue_for_later_sync(local_result)
+
+    <span class="cmd-keyword">return</span> local_result  <span class="cmd-comment"># 클라우드 응답 없어도 즉시 반환!</span>
+      </div>
+
+      <!-- 3. Privacy & Regulation -->
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-top: 1.8rem;">
+        ③ 데이터 프라이버시와 규제 (Privacy by Design)
+      </h3>
+      <p class="content-paragraph">
+        EU GDPR, 한국 개인정보보호법, 미국 HIPAA(의료) 법안에 따라 얼굴 및 개인 생체 정보를 외부 서버로 전송 시 엄격한 법적 제약이 따릅니다. 엣지 AI는 **원본 이미지를 저장하지 않고 추론 결과(JSON)만 남긴 뒤 폐기**하므로 개인정보 규제 리스크를 원천 제거합니다.
+      </p>
+
+      <!-- 4. Cost & ROI Analysis -->
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-top: 1.8rem;">
+        ④ 비용 절감 분석 & 하드웨어 ROI (투자 회수 기간) 추산
+      </h3>
+      <p class="content-paragraph">
+        CCTV 5대가 초당 1회씩 이미지를 분석할 때 (월 1,296만 회 호출):<br>
+        • 클라우드 Vision API 정가 기준 ($1.5/1,000건): <span class="highlight-text" style="color:var(--accent-pink);">월 약 2,700만 원 ($19,440/월)</span><br>
+        • 볼륨 할인 적용 시에도: <span class="highlight-text" style="color:var(--accent-pink);">월 약 180만 원 ($1,296/월)</span>
+      </p>
+
+      <div class="concept-grid-2col">
+        <div class="concept-card">
+          <h4>[디바이스 클래스별 엣지 하드웨어 단가]</h4>
+          <p>
+            • TinyML 보드 (ESP32-S3, STM32): 1~3만 원<br>
+            • 라즈베리파이 5(8GB) + 카메라 + 케이스: 약 20~25만 원<br>
+            • NVIDIA Jetson Orin Nano 개발 키트: 약 70만 원<br>
+            • 산업용 엣지 PC (x86 + NPU): 약 100~300만 원
+          </p>
+        </div>
+        <div class="concept-card">
+          <h4>[라즈베리파이 노드 ROI 회수 계산]</h4>
+          <p>
+            • 총 라즈베리파이 노드 구축비: 약 25만 원<br>
+            • 월 클라우드 API 비용 $100 (약 14만 원) 절감 가정 시:<br>
+            <strong style="color: var(--accent-green); font-size: 1.05rem;">투자 회수 기간 (ROI) = 25만 원 ÷ 14만 원 ≈ 약 1.8개월!</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. Bandwidth Savings -->
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-amber); margin-top: 1.8rem;">
+        ⑤ 대역폭 99% 절감 (300 Byte 결과만 전송)
+      </h3>
+      <p class="content-paragraph">
+        FHD(1080p 30fps) 비압축 영상 데이터량은 초당 187MB, <strong>하루 16.2 TB (월 484 TB)</strong>에 달합니다. 엣지 AI는 대용량 영상을 전송하지 않고 다음과 같은 <span class="highlight-text" style="color: var(--accent-green);">300 Byte JSON 수치 데이터만 전송하여 네트워크 대역폭을 99.7% 절약</span>합니다!
+      </p>
+
+      <div class="code-box">
+<span class="cmd-comment"># 엣지에서 전송하는 데이터 예시 (원본 100KB 이미지 대신 300 Bytes JSON만 전송)</span>
+result_payload = {
+    <span class="cmd-string">"timestamp"</span>: <span class="cmd-string">"2026-08-07T15:00:00+09:00"</span>,
+    <span class="cmd-string">"device_id"</span>: <span class="cmd-string">"rpi4-factory-cam-01"</span>,
+    <span class="cmd-string">"detections"</span>: [
+        {
+            <span class="cmd-string">"class"</span>: <span class="cmd-string">"defect"</span>,
+            <span class="cmd-string">"confidence"</span>: 0.94,
+            <span class="cmd-string">"bbox"</span>: [120, 85, 200, 165]
+        }
+    ],
+    <span class="cmd-string">"inference_time_ms"</span>: 23.4
+}
+      </div>
+    </section>
+
+    <!-- PART 4: 클라우드 vs 엣지 마스터 종합 비교표 -->
+    <section class="theory-section" id="part4">
+      <span class="section-num-tag">Chapter 04</span>
+      <h2 class="section-title"><i class="fa-solid fa-table"></i> 4. 클라우드 AI vs 엣지 AI 마스터 종합 비교표</h2>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>비교 항목</th>
+              <th>클라우드 AI</th>
+              <th>엣지 AI (모바일 NPU · Jetson · RPi 5 / Coral TPU)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>추론 지연시간</strong></td>
+              <td>50~500ms (네트워크 포함)</td>
+              <td><strong style="color:var(--accent-green);">5~50ms (초저지연)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>오프라인 동작</strong></td>
+              <td>불가 (인터넷 필수)</td>
+              <td><strong style="color:var(--accent-green);">가능 (100% 오프라인 작동)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>초기 비용</strong></td>
+              <td>낮음 (서비스 즉시 사용)</td>
+              <td>중간 (하드웨어 초기 투자)</td>
+            </tr>
+            <tr>
+              <td><strong>운영 비용 (OpEx)</strong></td>
+              <td>사용량 비례 계속 증가</td>
+              <td><strong style="color:var(--accent-green);">거의 없음 (전기료 수준)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>데이터 프라이버시</strong></td>
+              <td>외부 서버 전송 필요</td>
+              <td><strong style="color:var(--accent-green);">로컬 처리, 유출 위험 원천 차단</strong></td>
+            </tr>
+            <tr>
+              <td><strong>대역폭 사용</strong></td>
+              <td>높음 (영상 대용량 전송)</td>
+              <td><strong style="color:var(--accent-green);">낮음 (결과 수치 JSON만 전송)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>컴퓨팅 파워</strong></td>
+              <td>무제한 (스케일 업 용이)</td>
+              <td>제한적 (디바이스 가속기 사양)</td>
+            </tr>
+            <tr>
+              <td><strong>규제 준수</strong></td>
+              <td>데이터 위치 확인 필요</td>
+              <td><strong style="color:var(--accent-green);">데이터 현장 내 유지 (GDPR 준수)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip-box">
+        💡 <strong>[하이브리드 AI 건축 메커니즘]</strong><br>
+        모든 연산을 엣지에서만 처리할 필요는 없습니다. 초저지연 및 보안이 필요한 1차 추론은 **엣지(라즈베리파이 + TPU)**에서 수행하고, 장기 트렌드 분석 및 모델 재학습은 **클라우드**에서 실행하는 **하이브리드(Hybrid) 접근법**이 실무 현장에서 가장 이상적인 설계입니다.
+      </div>
+    </section>
+
+    <!-- PART 5: 2024~2026 최신 트렌드 -->
+    <section class="theory-section" id="part5">
+      <span class="section-num-tag">Chapter 05</span>
+      <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> 5. 2024~2026 최신 엣지 AI 트렌드 & 미래 전망</h2>
+
+      <div class="concept-grid-2col">
+        <div class="concept-card">
+          <h4><span class="trend-pill">NPU 보편화</span> NPU 가속기 생태계 대중화</h4>
+          <p>라즈베리파이 5 공식 Hailo-8 (26 TOPS) AI Kit 출시로 고성능 NPU를 저렴하게 활용 가능해졌습니다.</p>
+        </div>
+        <div class="concept-card">
+          <h4><span class="trend-pill">Small LLM</span> 소형 언어 모델의 엣지 탑재</h4>
+          <p>Phi-3, Gemma 2B, Llama 3.2 1B 등 1~4B 규모 언어 모델이 라즈베리파이 5(8GB)에서 초당 수 토큰 추론 가능.</p>
+        </div>
+        <div class="concept-card">
+          <h4><span class="trend-pill">TinyML 성숙</span> 마이크로컨트롤러 ML 실행</h4>
+          <p>Arduino, ESP32, STM32(수KB RAM)에서 TensorFlow Lite Micro로 배터리 센서 AI 추론 성숙.</p>
+        </div>
+        <div class="concept-card">
+          <h4><span class="trend-pill">멀티모달</span> 비전-언어 모델 엣지 이동</h4>
+          <p>텍스트, 이미지, 오디오를 결합 처리하는 CLIP, LLaVA 경량화 모델의 엣지 로봇 이식 본격화.</p>
+        </div>
+      </div>
+
+      <div class="tip-box" style="background-color: rgba(56, 189, 248, 0.08); border-left-color: var(--accent-cyan);">
+        🔮 <strong>[미래 예측 Pro Tip]</strong><br>
+        엣지 AI의 미래를 미리 보려면 스마트폰을 관찰하세요. 아이폰의 Neural Engine, 퀄컴 Hexagon NPU 등 스마트폰 NPU에서 먼저 검증된 기술은 2~3년 뒤 라즈베리파이급 임베디드 로봇 디바이스로 반드시 확산되는 법칙이 반복됩니다!
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 AI 로봇 마스터 교육 과정 | 독립 온디바이스 AI 개념 이론 교재</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Theme Toggle
+    const themeBtn = document.getElementById('themeToggleBtn');
+    let isDark = true;
+    themeBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      }
+    });
+  </script>
+</body>
+</html>

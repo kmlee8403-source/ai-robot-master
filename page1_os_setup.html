@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1장. 라즈베리파이 이해하기 & OS Setup - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background-color: var(--bg-primary); color: var(--text-main); line-height: 1.6; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color); padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+      color: var(--text-main); font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1rem; list-style: none; flex-wrap: wrap; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; padding: 0.4rem 0.7rem; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+    .page-title-box h1 { font-size: 2.2rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.8rem; }
+
+    .slides-container {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+    .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; color: var(--text-main); }
+    .card-title span.step-num {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem;
+    }
+
+    .explanation-box { background-color: rgba(56, 189, 248, 0.05); border-left: 4px solid var(--accent-cyan); padding: 1rem 1.25rem; border-radius: 0 10px 10px 0; margin-bottom: 1.25rem; font-size: 0.9rem; }
+    .warning-box { background-color: rgba(245, 158, 11, 0.08); border-left: 4px solid var(--accent-amber); padding: 1rem 1.25rem; border-radius: 0 10px 10px 0; margin-bottom: 1.25rem; font-size: 0.9rem; }
+
+    .terminal-wrapper { background-color: var(--bg-terminal); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem; }
+    .terminal-header { background-color: #121824; padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn { background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { background-color: var(--accent-cyan); color: #0f172a; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+    .cmd-prompt { color: #10b981; margin-right: 0.5rem; font-weight: 700; }
+
+    .btn-action { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #fff; }
+    .btn-drive { background: linear-gradient(135deg, #1fa463, #0f9d58); color: #fff; }
+
+    .page-nav-bottom { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem; border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link active">1장. 라즈베리파이 OS</a></li>
+      <li><a href="page2_linux_cmd.html" class="nav-link">2장. 리눅스 명령어</a></li>
+      <li><a href="page3_buildhat_hardware.html" class="nav-link">3장. Build HAT 이해</a></li>
+      <li><a href="page4_spike_python.html" class="nav-link">4장. 파이썬 LEGO 제어</a></li>
+      <li><a href="page5_vision_coral_ai.html" class="nav-link">5장. 카메라 & Coral AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-brands fa-raspberry-pi"></i> 1장. 라즈베리파이 이해하기 & OS Setup</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        [1강 슬라이드 연동] 라즈베리파이 하드웨어 개요, Bullseye 32bit OS 설치, PuTTY/VNC 원격 접속 및 기본 환경 설정 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 1강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 1강. 라즈베리파이 이해하기 (Google Presentation)</h3>
+        <a href="https://docs.google.com/presentation/d/1E6DLJDCRlguHOM9UucUhkZStPTp84g5VY6oy3FMIq0Y/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          1강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1E6DLJDCRlguHOM9UucUhkZStPTp84g5VY6oy3FMIq0Y/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- STEP 1 -->
+    <article class="card">
+      <div class="card-title">
+        <span class="step-num">1</span> Raspberry Pi OS (Legacy, 32bit) Bullseye Standard 다운로드
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        Coral TPU(Edge TPU) 파이썬 라이브러리 드라이버와의 완전한 호환성을 보장하기 위해 <strong>Debian Bullseye 32-bit Standard</strong> 버전을 사용합니다.
+      </p>
+      <div class="warning-box">
+        <strong>⚠️ 주의:</strong> 최신 Bookworm OS(64bit)에서는 PyCoral 라이브러리 의존성 문제가 있으므로 본 실습에서는 반드시 Bullseye 32bit OS를 다운로드합니다.
+      </div>
+      <a href="https://downloads.raspberrypi.org/raspios_oldstable_armhf/images/raspios_oldstable_armhf-2023-10-10/2023-05-03-raspios-bullseye-armhf.img.xz" target="_blank" class="btn-action btn-primary">
+        <i class="fa-solid fa-download"></i> Raspios Bullseye 32bit OS 이미지 다운로드 (.img.xz)
+      </a>
+    </article>
+
+    <!-- STEP 2 -->
+    <article class="card">
+      <div class="card-title">
+        <span class="step-num">2</span> Raspberry Pi Imager 프로그램 다운로드 및 SD카드 플래싱
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        Imager 실행 후 [CHOOSE OS] -> [Use custom]을 누르고 STEP 1에서 받은 OS 이미지 파일 선택 후 SD 카드에 써줍니다.
+      </p>
+      <div class="explanation-box">
+        <strong>💡 고급 설정 (Ctrl + Shift + X):</strong> SSH 활성화, ID/비밀번호(<code>pi</code> / <code>raspberry</code>), 와이파이 SSID를 미리 입력해두면 원격 접속이 훨씬 편리해집니다.
+      </div>
+      <a href="https://drive.google.com/file/d/1h0YlGxCN-9dMOK8PI7CERGXLW-z8-jaK/view?usp=sharing" target="_blank" class="btn-action btn-drive">
+        <i class="fa-brands fa-google-drive"></i> Raspberry Pi Imager 다운로드 (imager-1.9.6.exe)
+      </a>
+    </article>
+
+    <!-- STEP 3 & 4 -->
+    <article class="card">
+      <div class="card-title">
+        <span class="step-num">3</span> PuTTY SSH 원격 접속 및 raspi-config 환경 설정
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        PuTTY 프로그램으로 라즈베리파이 IP에 SSH(Port 22)로 접속 후 하드웨어 인터페이스를 설정합니다.
+      </p>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - raspi_config.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> raspi-config</pre>
+        </div>
+      </div>
+
+      <div class="explanation-box" style="border-left-color: var(--accent-purple);">
+        <p><strong><i class="fa-solid fa-sliders"></i> raspi-config 설정 핵심:</strong></p>
+        <p>1. <code>3. Interface Options</code> -> <code>I3 VNC</code> -> <strong>&lt;Yes&gt;</strong></p>
+        <p>2. <code>3. Interface Options</code> -> <code>I6 Serial</code> -> 1번(login shell) <strong>&lt;No&gt;</strong> / 2번(hardware serial) <strong>&lt;Yes&gt;</strong> (BuildHAT 통신 필수!)</p>
+        <p>3. Finish -> <code>sudo reboot</code></p>
+      </div>
+
+      <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html" target="_blank" class="btn-action btn-primary" style="margin-top: 1rem;">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> PuTTY 다운로드 공식 페이지
+      </a>
+    </article>
+
+    <!-- STEP 5 & NETWORKING -->
+    <article class="card">
+      <div class="card-title">
+        <span class="step-num">4</span> Real VNC Viewer GUI 접속, 이더넷 고정 IP & 한글 패치
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        VNC Viewer로 라즈베리파이 바탕화면에 접속하고 유선 이더넷 고정 IP 및 한글 입출력 폰트를 세팅합니다.
+      </p>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">conf - /etc/dhcpcd.conf (고정 IP)</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># sudo nano /etc/dhcpcd.conf 맨 아래 추가</span>
+interface eth0
+static ip_address=192.168.137.100/24
+nogateway</pre>
+        </div>
+      </div>
+
+      <a href="https://drive.google.com/file/d/1YXWcXCC6BdACGTc4AIPzznvbUUz6mFWG/view?usp=sharing" target="_blank" class="btn-action btn-drive">
+        <i class="fa-brands fa-google-drive"></i> Real VNC Viewer 다운로드 (VNC-Viewer-7.15.1.msi)
+      </a>
+    </article>
+
+    <!-- Bottom Nav -->
+    <div class="page-nav-bottom">
+      <a href="index.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 포털 홈으로</a>
+      <a href="page2_linux_cmd.html" class="btn-action btn-primary">2장. 리눅스 명령어 단원으로 이동 <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText.replace(/pi@raspberrypi:[^$]*\$\s*/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>

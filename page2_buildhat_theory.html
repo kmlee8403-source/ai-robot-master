@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2장. BuildHAT 공식 이론 & 센서/모터 제어 - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; color: var(--text-main);
+      font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600; padding: 0.5rem 0.8rem;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1);
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box {
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .page-title-box h1 {
+      font-size: 2.2rem; font-weight: 800; color: var(--accent-amber);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+
+    /* Slide Deck Container */
+    .slides-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;
+    }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Cards */
+    .card {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+    }
+    .card-title {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem; color: var(--text-main);
+    }
+
+    /* Theory Tech Grid */
+    .theory-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem; margin: 1.25rem 0;
+    }
+    .theory-box {
+      background-color: var(--bg-primary); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .theory-box h4 {
+      color: var(--accent-amber); font-size: 1rem; margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    /* Code Tab Container */
+    .code-tabs {
+      display: flex; gap: 0.5rem; margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; flex-wrap: wrap;
+    }
+    .code-tab {
+      padding: 0.5rem 1rem; border-radius: 8px; background: none;
+      border: 1px solid var(--border-color); color: var(--text-muted);
+      font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+    }
+    .code-tab.active {
+      background-color: var(--accent-amber); color: #0f172a; font-weight: 700; border-color: var(--accent-amber);
+    }
+    .code-panel { display: none; }
+    .code-panel.active { display: block; }
+
+    /* Terminal Block */
+    .terminal-wrapper {
+      background-color: var(--bg-terminal); border-radius: 12px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem;
+    }
+    .terminal-header {
+      background-color: #121824; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted);
+      padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background-color: var(--accent-amber); color: #0f172a; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-string { color: #a3e635; }
+    .cmd-arg { color: #38bdf8; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+
+    .btn-action {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #fff; }
+
+    .page-nav-bottom {
+      display: flex; justify-content: space-between; margin-top: 3rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem;
+      border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link">1장. OS & 네트워크</a></li>
+      <li><a href="page2_buildhat_theory.html" class="nav-link active">2장. BuildHAT 공식이론</a></li>
+      <li><a href="page3_vision_opencv.html" class="nav-link">3장. 비전 & OpenCV</a></li>
+      <li><a href="page4_coral_tpu.html" class="nav-link">4장. Coral TPU AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-solid fa-gears"></i> 2장. BuildHAT 공식 이론 & LEGO SPIKE 제어</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        Raspberry Pi Build HAT의 하드웨어 구조 및 공식 문서 기반의 모터 2개, 거리센서, 힘센서, 컬러센서 파이썬 API 사용법 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 3강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 3강 강의 슬라이드 (BuildHAT & LEGO SPIKE 제어)</h3>
+        <a href="https://docs.google.com/presentation/d/1kTw_YZ8ZJO2AhwkVDGsjVGbQ5HertsfsEUopQCQKJ18/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          3강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1kTw_YZ8ZJO2AhwkVDGsjVGbQ5HertsfsEUopQCQKJ18/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- BuildHAT Official Technical Theory Section -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-microchip" style="color: var(--accent-amber);"></i> Raspberry Pi Build HAT 하드웨어 공식 이론
+      </div>
+      <p style="color: var(--text-muted);">
+        Build HAT은 라즈베리파이 GPIO 핀 위에 장착하여 LEGO® Technic™ 및 SPIKE™ Prime의 모터와 센서를 정밀하게 제어하는 확장 보드입니다.
+      </p>
+
+      <div class="theory-grid">
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-brain"></i> 1. 온보드 RP2040 마이크로컨트롤러</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Build HAT에는 라즈베리파이가 직접 개발한 RP2040 칩이 탑재되어 있습니다. 라즈베리파이 메인 CPU 대신 모터의 고속 엔코더 펄스 카운트 및 PWM 가속 연산을 전담 처리합니다.
+          </p>
+        </div>
+
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-bolt"></i> 2. 8V 4A DC 전원 공급계</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            LEGO 모터와 고성능 비전/거리 센서는 높은 전력을 요구합니다. Build HAT 8V 어댑터는 벅 레귤레이터를 통해 라즈베리파이에 5V 3A 전원을 공급하고, 모터에는 8V 전원을 고출력 공급합니다.
+          </p>
+        </div>
+
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-network-wired"></i> 3. LPF2 커넥터 & UART 통신</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            4개의 Port(A, B, C, D)는 LPF2 표준 커넥터를 채택하였습니다. 라즈베리파이와는 `/dev/ttyAMA0` 하드웨어 시리얼(UART) 포트로 패킷을 주고받습니다.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Official BuildHAT API Code Examples -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-code" style="color: var(--accent-cyan);"></i> BuildHAT 공식 라이브러리 예제 (공식 문서 기준)
+      </div>
+
+      <div class="code-tabs">
+        <button class="code-tab active" onclick="switchTab('tab-motors', this)"><i class="fa-solid fa-gears"></i> 모터 2개 (MotorPair)</button>
+        <button class="code-tab" onclick="switchTab('tab-distance', this)"><i class="fa-solid fa-ruler-combined"></i> 거리 센서</button>
+        <button class="code-tab" onclick="switchTab('tab-force', this)"><i class="fa-solid fa-hand-pointer"></i> 힘 센서</button>
+        <button class="code-tab" onclick="switchTab('tab-color', this)"><i class="fa-solid fa-palette"></i> 컬러 센서</button>
+        <button class="code-tab" onclick="switchTab('tab-all', this)"><i class="fa-solid fa-robot"></i> 자율주행 통합 로봇</button>
+      </div>
+
+      <!-- Tab 1: Motors -->
+      <div id="tab-motors" class="code-panel active">
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">python - buildhat_motors.py</span>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          </div>
+          <div class="terminal-body">
+            <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> Motor, MotorPair
+<span class="cmd-keyword">import</span> time
+
+<span class="cmd-comment"># Port A: 좌측 모터, Port B: 우측 모터</span>
+motor_a = Motor(<span class="cmd-string">'A'</span>)
+motor_b = Motor(<span class="cmd-string">'B'</span>)
+
+<span class="cmd-comment"># 1) 단일 모터 회전</span>
+motor_a.run_for_degrees(<span class="cmd-arg">360</span>, speed=<span class="cmd-arg">50</span>)
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"Motor A 절대 위치:"</span>, motor_a.get_aposition())
+
+<span class="cmd-comment"># 2) MotorPair 동기화 동시 구동</span>
+pair = MotorPair(<span class="cmd-string">'A'</span>, <span class="cmd-string">'B'</span>)
+pair.run_for_seconds(<span class="cmd-arg">3</span>, speedl=<span class="cmd-arg">40</span>, speedr=<span class="cmd-arg">40</span>) <span class="cmd-comment"># 3초 직진</span>
+pair.run_for_degrees(<span class="cmd-arg">180</span>, speedl=<span class="cmd-arg">40</span>, speedr=<span class="cmd-arg">-40</span>) <span class="cmd-comment"># 제자리 회전</span>
+pair.stop()</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Distance -->
+      <div id="tab-distance" class="code-panel">
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">python - buildhat_distance.py</span>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          </div>
+          <div class="terminal-body">
+            <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> DistanceSensor
+<span class="cmd-keyword">import</span> time
+
+dist = DistanceSensor(<span class="cmd-string">'C'</span>)
+dist.on() <span class="cmd-comment"># LED 눈 켜기</span>
+
+<span class="cmd-keyword">for</span> _ <span class="cmd-keyword">in</span> range(<span class="cmd-arg">10</span>):
+    distance = dist.get_distance()
+    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"측정 거리: {distance} cm"</span>)
+    time.sleep(<span class="cmd-arg">0.5</span>)
+
+dist.wait_for_distance_closer_than(<span class="cmd-arg">10</span>)
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"10cm 이내 접근 감지!"</span>)
+dist.off()</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Force -->
+      <div id="tab-force" class="code-panel">
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">python - buildhat_force.py</span>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          </div>
+          <div class="terminal-body">
+            <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> ForceSensor
+
+force_sensor = ForceSensor(<span class="cmd-string">'D'</span>)
+
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"눌림 상태:"</span>, force_sensor.is_pressed)
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"눌림 힘(N):"</span>, force_sensor.get_force())
+
+<span class="cmd-keyword">def</span> handle_pressed(force):
+    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"🔴 힘센서 클릭 감지! 가해진 힘: {force} N"</span>)
+
+force_sensor.when_pressed = handle_pressed
+force_sensor.wait_until_pressed()</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 4: Color -->
+      <div id="tab-color" class="code-panel">
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">python - buildhat_color.py</span>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          </div>
+          <div class="terminal-body">
+            <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> ColorSensor
+<span class="cmd-keyword">import</span> time
+
+color_sensor = ColorSensor(<span class="cmd-string">'B'</span>)
+
+<span class="cmd-keyword">for</span> _ <span class="cmd-keyword">in</span> range(<span class="cmd-arg">10</span>):
+    color = color_sensor.get_color()
+    reflected = color_sensor.get_reflected_light()
+    <span class="cmd-keyword">print</span>(f<span class="cmd-string">"색상: {color:8s} | 반사광: {reflected}%"</span>)
+    time.sleep(<span class="cmd-arg">0.5</span>)</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 5: All in One -->
+      <div id="tab-all" class="code-panel">
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">python - buildhat_robot_full.py</span>
+            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+          </div>
+          <div class="terminal-body">
+            <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> MotorPair, DistanceSensor, ForceSensor
+<span class="cmd-keyword">import</span> time
+
+pair = MotorPair(<span class="cmd-string">'A'</span>, <span class="cmd-string">'B'</span>)
+dist = DistanceSensor(<span class="cmd-string">'C'</span>)
+force = ForceSensor(<span class="cmd-string">'D'</span>)
+
+dist.on()
+pair.start(speedl=<span class="cmd-arg">30</span>, speedr=<span class="cmd-arg">30</span>)
+
+<span class="cmd-keyword">while</span> <span class="cmd-keyword">not</span> force.is_pressed:
+    d = dist.get_distance()
+    <span class="cmd-keyword">if</span> <span class="cmd-arg">0</span> < d < <span class="cmd-arg">15</span>:
+        pair.stop()
+        pair.run_for_seconds(<span class="cmd-arg">1</span>, speedl=<span class="cmd-arg">-30</span>, speedr=<span class="cmd-arg">-30</span>)
+        pair.run_for_degrees(<span class="cmd-arg">180</span>, speedl=<span class="cmd-arg">40</span>, speedr=<span class="cmd-arg">-40</span>)
+        pair.start(speedl=<span class="cmd-arg">30</span>, speedr=<span class="cmd-arg">30</span>)
+    time.sleep(<span class="cmd-arg">0.1</span>)
+
+pair.stop()
+dist.off()
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"비상 정지 버튼 눌림 - 정지 완료"</span>)</pre>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <!-- Page Navigation -->
+    <div class="page-nav-bottom">
+      <a href="page1_os_setup.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 1장. OS & 네트워크로</a>
+      <a href="page3_vision_opencv.html" class="btn-action btn-primary">3장. 비전 & OpenCV로 이동 <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.code-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>

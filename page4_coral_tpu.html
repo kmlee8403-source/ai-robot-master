@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4장. Coral TPU AI & 자율주행 - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; color: var(--text-main);
+      font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600; padding: 0.5rem 0.8rem;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1);
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box {
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .page-title-box h1 {
+      font-size: 2.2rem; font-weight: 800; color: var(--accent-green);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+
+    /* Slide Deck Container */
+    .slides-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;
+    }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Cards */
+    .card {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+    }
+    .card-title {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem; color: var(--text-main);
+    }
+
+    .explanation-box {
+      background-color: rgba(16, 185, 129, 0.05);
+      border-left: 4px solid var(--accent-green);
+      padding: 1rem 1.25rem; border-radius: 0 10px 10px 0; margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    .official-doc-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(56, 189, 248, 0.15));
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+
+    /* Terminal Code Block */
+    .terminal-wrapper {
+      background-color: var(--bg-terminal); border-radius: 12px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem;
+    }
+    .terminal-header {
+      background-color: #121824; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted);
+      padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background-color: var(--accent-green); color: #0f172a; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-string { color: #a3e635; }
+    .cmd-arg { color: #38bdf8; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+    .cmd-prompt { color: #10b981; margin-right: 0.5rem; font-weight: 700; }
+
+    .btn-action {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan)); color: #fff; }
+
+    .page-nav-bottom {
+      display: flex; justify-content: space-between; margin-top: 3rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem;
+      border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link">1장. OS & 네트워크</a></li>
+      <li><a href="page2_buildhat_theory.html" class="nav-link">2장. BuildHAT 공식이론</a></li>
+      <li><a href="page3_vision_opencv.html" class="nav-link">3장. 비전 & OpenCV</a></li>
+      <li><a href="page4_coral_tpu.html" class="nav-link active">4장. Coral TPU AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-solid fa-bolt"></i> 4장. Coral TPU AI 인공지능 & 자율주행 로봇</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        Google Coral USB Accelerator 설치, PyCoral 파이썬 API, MobileNet V2 딥러닝 추론 및 비전-모터 통합 자율주행 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 7강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 7강 강의 슬라이드 (Coral TPU & AI 로봇 마스터)</h3>
+        <a href="https://docs.google.com/presentation/d/1nhLh72oWg2FM8wHbU6hzDk50eU4VlmjfoklzMukVP2A/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          7강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1nhLh72oWg2FM8wHbU6hzDk50eU4VlmjfoklzMukVP2A/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- Official Coral Documentation Banner -->
+    <div class="official-doc-banner">
+      <div>
+        <h4 style="color: var(--accent-green); font-size: 1.1rem; margin-bottom: 0.3rem;">
+          <i class="fa-solid fa-book"></i> Google Coral 공식 문서 (Get Started with Accelerator)
+        </h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Google 공식 Edge TPU Linux 가이드 문서: 저장소 등록, 런타임 빌드, PyCoral API 사양 및 양자화 모델 정보
+        </p>
+      </div>
+      <a href="https://gweb-coral-full.uc.r.appspot.com/docs/accelerator/get-started/#runtime-on-linux" target="_blank" class="btn-action btn-primary">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Coral 공식 가이드 열기
+      </a>
+    </div>
+
+    <!-- STEP 11 & 12 -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-microchip" style="color: var(--accent-green);"></i> STEP 11 & 12. Edge TPU Runtime & PyCoral API 설치
+      </div>
+
+      <div class="explanation-box">
+        <p><strong><i class="fa-solid fa-bolt"></i> Google Coral USB Accelerator란?</strong></p>
+        <p>Google이 개발한 초고속 AI 신경망 가속 코프로세서입니다. 초당 4조 번(4 TOPS)의 연산을 수행하며, 라즈베리파이 CPU만으로는 초당 2~3프레임에 불과한 딥러닝 추론 속도를 **초당 100프레임 이상**으로 가속해줍니다.</p>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.3rem;"><i class="fa-solid fa-circle-info"></i> 반드시 라즈베리파이 4의 **파란색 USB 3.0 포트**에 연결해야 합니다.</p>
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - install_coral.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># 1) Coral APT 저장소 등록 및 GPG 키 추가</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">echo</span> <span class="cmd-string">"deb https://packages.cloud.google.com/apt coral-edgetpu-stable main"</span> | <span class="cmd-keyword">sudo</span> tee /etc/apt/sources.list.d/coral-edgetpu.list
+<span class="cmd-prompt">pi@raspberrypi:~ $</span>curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | <span class="cmd-keyword">sudo</span> apt-key add -
+
+<span class="cmd-comment"># 2) Edge TPU C/C++ 런타임 라이브러리 설치</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> apt-get update
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> apt-get install -y libedgetpu1-std
+
+<span class="cmd-comment"># 3) PyCoral 파이썬 API 설치</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> apt-get install -y python3-pycoral</pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- STEP 13 -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-play" style="color: var(--accent-cyan);"></i> STEP 13. Edge TPU 이미지 분류 모델 데모 실행
+      </div>
+
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        MobileNet V2 딥러닝 모델로 새(Parrot) 사진을 3.1ms(초당 300회)의 전광석화 같은 속도로 분류해봅니다.
+      </p>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - run_coral_demo.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># 1) 예제 코드 및 모델 다운로드</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">mkdir</span> coral && <span class="cmd-keyword">cd</span> coral
+<span class="cmd-prompt">pi@raspberrypi:~/coral $</span>git clone https://github.com/google-coral/pycoral.git
+<span class="cmd-prompt">pi@raspberrypi:~/coral $</span><span class="cmd-keyword">cd</span> pycoral
+<span class="cmd-prompt">pi@raspberrypi:~/coral/pycoral $</span>bash examples/install_requirements.sh classify_image.py
+
+<span class="cmd-comment"># 2) Coral TPU 이미지 분류 데모 실행</span>
+<span class="cmd-prompt">pi@raspberrypi:~/coral/pycoral $</span>python3 examples/classify_image.py \
+  --model test_data/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite \
+  --labels test_data/inat_bird_labels.txt \
+  --input test_data/parrot.jpg
+
+<span class="cmd-comment"># 실행 결과 예시:</span>
+<span class="cmd-string">----INFERENCE TIME----</span>
+<span class="cmd-string">3.1 ms</span>
+<span class="cmd-string">----RESULTS----</span>
+<span class="cmd-string">Ara macao (Scarlet Macaw): 0.77734</span></pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Master Autonomous AI Robot Code -->
+    <article class="card" style="border: 2px solid var(--accent-green);">
+      <div class="card-title">
+        <i class="fa-solid fa-robot" style="color: var(--accent-green);"></i> 올인원 자율주행 AI 로봇 마스터 연동 완성 코드
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Coral TPU AI 비전 객체 인식 + BuildHAT 2개 모터 주행 + 거리센서 장애물 탐지 + 힘센서 비상정지 통합 코드입니다.
+      </p>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">python - ai_robot_master_main.py</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-keyword">from</span> buildhat <span class="cmd-keyword">import</span> MotorPair, DistanceSensor, ForceSensor
+<span class="cmd-keyword">from</span> pycoral.adapters <span class="cmd-keyword">import</span> common, classify
+<span class="cmd-keyword">from</span> pycoral.utils.edgetpu <span class="cmd-keyword">import</span> make_interpreter
+<span class="cmd-keyword">from</span> picamera2 <span class="cmd-keyword">import</span> Picamera2
+<span class="cmd-keyword">import</span> cv2, time
+
+<span class="cmd-comment"># 1. Coral Edge TPU AI 모델 초기화</span>
+model_path = <span class="cmd-string">'coral/pycoral/test_data/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite'</span>
+interpreter = make_interpreter(model_path)
+interpreter.allocate_tensors()
+
+<span class="cmd-comment"># 2. BuildHAT 센서 & 모터 초기화</span>
+pair = MotorPair(<span class="cmd-string">'A'</span>, <span class="cmd-string">'B'</span>)       <span class="cmd-comment"># 구동 모터 2개</span>
+dist_sensor = DistanceSensor(<span class="cmd-string">'C'</span>) <span class="cmd-comment"># 초음파 거리 센서</span>
+force_sensor = ForceSensor(<span class="cmd-string">'D'</span>)   <span class="cmd-comment"># 비상 정지 센서</span>
+
+dist_sensor.on()
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"🤖 AI 로봇 마스터 자율주행 시작!"</span>)
+
+pair.start(speedl=<span class="cmd-arg">30</span>, speedr=<span class="cmd-arg">30</span>)
+
+<span class="cmd-keyword">try</span>:
+    <span class="cmd-keyword">while</span> <span class="cmd-keyword">not</span> force_sensor.is_pressed:
+        distance = dist_sensor.get_distance()
+        
+        <span class="cmd-comment"># 장애물 발견 시 자동 회피</span>
+        <span class="cmd-keyword">if</span> <span class="cmd-arg">0</span> < distance < <span class="cmd-arg">15</span>:
+            pair.stop()
+            pair.run_for_seconds(<span class="cmd-arg">1</span>, speedl=<span class="cmd-arg">-30</span>, speedr=<span class="cmd-arg">-30</span>)
+            pair.run_for_degrees(<span class="cmd-arg">180</span>, speedl=<span class="cmd-arg">40</span>, speedr=<span class="cmd-arg">-40</span>)
+            pair.start(speedl=<span class="cmd-arg">30</span>, speedr=<span class="cmd-arg">30</span>)
+            
+        time.sleep(<span class="cmd-arg">0.1</span>)
+
+<span class="cmd-keyword">except</span> KeyboardInterrupt:
+    <span class="cmd-keyword">pass</span>
+
+pair.stop()
+dist_sensor.off()
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"🛑 로봇 정지 완료."</span>)</pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Page Navigation -->
+    <div class="page-nav-bottom">
+      <a href="page3_vision_opencv.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 3장. 비전 & OpenCV로</a>
+      <a href="index.html" class="btn-action btn-primary">포털 홈으로 이동 <i class="fa-solid fa-house"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText.replace(/pi@raspberrypi:[^$]*\$\s*/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2장. 리눅스 환경과 주요 명령어 - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background-color: var(--bg-primary); color: var(--text-main); line-height: 1.6; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color); padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+      color: var(--text-main); font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1rem; list-style: none; flex-wrap: wrap; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; padding: 0.4rem 0.7rem; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+    .page-title-box h1 { font-size: 2.2rem; font-weight: 800; color: var(--accent-blue); display: flex; align-items: center; gap: 0.8rem; }
+
+    .slides-container {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+    .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; color: var(--text-main); }
+
+    .cmd-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem; margin-top: 1rem;
+    }
+    .cmd-box {
+      background-color: var(--bg-primary); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 1.25rem; transition: transform 0.2s;
+    }
+    .cmd-box:hover { transform: translateY(-2px); border-color: var(--accent-cyan); }
+    .cmd-box code {
+      font-family: var(--font-code); color: var(--accent-cyan);
+      background-color: rgba(56, 189, 248, 0.1); padding: 0.3rem 0.6rem;
+      border-radius: 6px; font-weight: 700; font-size: 0.95rem;
+    }
+
+    .terminal-wrapper { background-color: var(--bg-terminal); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem; }
+    .terminal-header { background-color: #121824; padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn { background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { background-color: var(--accent-cyan); color: #0f172a; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+    .cmd-prompt { color: #10b981; margin-right: 0.5rem; font-weight: 700; }
+
+    .btn-action { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #fff; }
+
+    .page-nav-bottom { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem; border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link">1장. 라즈베리파이 OS</a></li>
+      <li><a href="page2_linux_cmd.html" class="nav-link active">2장. 리눅스 명령어</a></li>
+      <li><a href="page3_buildhat_hardware.html" class="nav-link">3장. Build HAT 이해</a></li>
+      <li><a href="page4_spike_python.html" class="nav-link">4장. 파이썬 LEGO 제어</a></li>
+      <li><a href="page5_vision_coral_ai.html" class="nav-link">5장. 카메라 & Coral AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-solid fa-terminal"></i> 2장. 리눅스 환경과 주요 명령어</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        [6강 슬라이드 연동] 라즈베리파이 OS 리눅스(Linux) 환경에서의 필수 터미널 명령어 완전 정복 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 6강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 6강_리눅스와 명령어 (Google Presentation)</h3>
+        <a href="https://docs.google.com/presentation/d/1xbNpG6g3PGwWxG9DQB4vDOC8SxVpnsE_MAWeQWCL-3A/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          6강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1xbNpG6g3PGwWxG9DQB4vDOC8SxVpnsE_MAWeQWCL-3A/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- Linux Commands Cheatsheet -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-book-open" style="color: var(--accent-cyan);"></i> 리눅스 주요 명령어 대백과
+      </div>
+
+      <div class="cmd-grid">
+        <div class="cmd-box">
+          <code>pwd</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Print Working Directory</strong><br>현재 작업 중인 폴더의 전체 경로를 출력합니다.
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>ls</code> / <code>ls -a</code> / <code>ls -l</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>List</strong><br>현재 폴더 내 모든 폴더 및 파일 리스트 출력 (`-a`: 숨긴파일 표시, `-l`: 자세히, `ls *.cfg`: cfg 파일만 검색).
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>mkdir [폴더명]</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Make Directory</strong><br>현재 디렉토리에 새로운 폴더를 생성합니다.
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>cd [경로]</code> / <code>cd ..</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Change Directory</strong><br>디렉토리 이동 (`cd`: 홈 경로 이동, `cd ..`: 상위 폴더 이동).
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>touch [파일명]</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Create Empty File</strong><br>0 바이트 크기의 빈 파일(예: `touch abc.txt`)을 즉시 생성합니다.
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>rm [파일명]</code> / <code>rm -rf [폴더]</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Remove</strong><br>파일 및 디렉토리 삭제 (`rm -f`: 묻지 않고 삭제, `rm -rf`: 폴더 및 하위 항목 강제 전부 삭제).
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>sudo</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>SuperUser Do</strong><br>최고 관리자(root) 권한으로 시스템 명령어를 실행합니다.
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>apt update</code> / <code>apt upgrade</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Advanced Packaging Tool</strong><br>소프트웨어 리스트 인터넷 최신화 (`sudo apt update`) 및 프로그램 최신 버전업 (`sudo apt upgrade`).
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>clear</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Clear Screen</strong><br>복잡해진 터미널 화면을 깨끗하게 지웁니다.
+          </p>
+        </div>
+
+        <div class="cmd-box">
+          <code>exit</code>
+          <p style="font-size:0.85rem; margin-top:0.5rem;">
+            <strong>Exit Session</strong><br>현재 접속된 터미널 창 및 SSH 세션을 종료합니다.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Terminal Command Practice -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-keyboard" style="color: var(--accent-green);"></i> 리눅스 명령어 직접 따라해보기 (Terminal Practice)
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - linux_practice.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># 1) 현재 위치 확인</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">pwd</span>
+
+<span class="cmd-comment"># 2) test_folder 생성 및 이동</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">mkdir</span> test_folder
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">cd</span> test_folder
+
+<span class="cmd-comment"># 3) 빈 파일 생성 및 목록 확인</span>
+<span class="cmd-prompt">pi@raspberrypi:~/test_folder $</span><span class="cmd-keyword">touch</span> robot.txt
+<span class="cmd-prompt">pi@raspberrypi:~/test_folder $</span><span class="cmd-keyword">ls</span> -la
+
+<span class="cmd-comment"># 4) 상위 디렉토리로 돌아와서 테스트 폴더 삭제</span>
+<span class="cmd-prompt">pi@raspberrypi:~/test_folder $</span><span class="cmd-keyword">cd</span> ..
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">rm</span> -rf test_folder</pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Bottom Nav -->
+    <div class="page-nav-bottom">
+      <a href="page1_os_setup.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 1장. OS Setup으로</a>
+      <a href="page3_buildhat_hardware.html" class="btn-action btn-primary">3장. Build HAT 이해하기 단원으로 이동 <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText.replace(/pi@raspberrypi:[^$]*\$\s*/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3장. V2 카메라 비전 센싱 & OpenCV - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none; color: var(--text-main);
+      font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600; padding: 0.5rem 0.8rem;
+      border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1);
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box {
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .page-title-box h1 {
+      font-size: 2.2rem; font-weight: 800; color: var(--accent-purple);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+
+    /* Slide Deck Container */
+    .slides-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;
+    }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    /* Cards */
+    .card {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 2rem; margin-bottom: 2rem;
+    }
+    .card-title {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem; color: var(--text-main);
+    }
+
+    .explanation-box {
+      background-color: rgba(139, 92, 246, 0.05);
+      border-left: 4px solid var(--accent-purple);
+      padding: 1rem 1.25rem; border-radius: 0 10px 10px 0; margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    /* Terminal Code Block */
+    .terminal-wrapper {
+      background-color: var(--bg-terminal); border-radius: 12px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem;
+    }
+    .terminal-header {
+      background-color: #121824; padding: 0.6rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted);
+      padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background-color: var(--accent-purple); color: #fff; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-string { color: #a3e635; }
+    .cmd-arg { color: #38bdf8; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+    .cmd-prompt { color: #10b981; margin-right: 0.5rem; font-weight: 700; }
+
+    .btn-action {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: #fff; }
+
+    .page-nav-bottom {
+      display: flex; justify-content: space-between; margin-top: 3rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem;
+      border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link">1장. OS & 네트워크</a></li>
+      <li><a href="page2_buildhat_theory.html" class="nav-link">2장. BuildHAT 공식이론</a></li>
+      <li><a href="page3_vision_opencv.html" class="nav-link active">3장. 비전 & OpenCV</a></li>
+      <li><a href="page4_coral_tpu.html" class="nav-link">4장. Coral TPU AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-solid fa-camera"></i> 3장. V2 카메라 비전 센싱 & OpenCV</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        라즈베리파이 카메라 모듈 V2 연결, Picamera2 차세대 카메라 파이썬 모듈 및 OpenCV 컴퓨터 비전 라이브러리 연동 실습 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 6강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 6강 강의 슬라이드 (카메라 비전센싱 & OpenCV)</h3>
+        <a href="https://docs.google.com/presentation/d/1xbNpG6g3PGwWxG9DQB4vDOC8SxVpnsE_MAWeQWCL-3A/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          6강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1xbNpG6g3PGwWxG9DQB4vDOC8SxVpnsE_MAWeQWCL-3A/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- Camera Hardware Test -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-camera-retro" style="color: var(--accent-purple);"></i> STEP 6. V2 카메라 미리보기 하드웨어 검증
+      </div>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        CSI 포트에 연결된 카메라가 정상 동작하는지 테스트합니다.
+      </p>
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - camera_hello.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">libcamera-hello</span></pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Picamera2 & OpenCV Installation -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-download" style="color: var(--accent-cyan);"></i> STEP 7 & 8. Picamera2 및 OpenCV 라이브러리 설치
+      </div>
+      
+      <div class="explanation-box">
+        <p><strong><i class="fa-solid fa-eye"></i> OpenCV (Open Source Computer Vision)란?</strong></p>
+        <p>이미지와 영상을 다루는 대표적인 오픈소스 비전 라이브러리입니다. 색상 공간 변환(RGB -> HSV), 가장자리(Edge) 검출, 객체 추적, 얼굴 인식, 딥러닝 모델 프레임 입력 변환 등 2,500개 이상의 강력한 비전 알고리즘을 제공합니다.</p>
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - install_vision.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># 1) Picamera2 카메라 제어 모듈 설치</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> apt install -y python3-picamera2
+
+<span class="cmd-comment"># 2) OpenCV 비전 라이브러리 설치</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> apt install -y python3-opencv</pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Vision Code Example -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-code" style="color: var(--accent-pink);"></i> OpenCV 실시간 비전 스트리밍 파이썬 예제
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">python - camera_opencv_stream.py</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-keyword">from</span> picamera2 <span class="cmd-keyword">import</span> Picamera2
+<span class="cmd-keyword">import</span> cv2
+
+picam2 = Picamera2()
+picam2.configure(picam2.create_preview_configuration(main={<span class="cmd-string">"size"</span>: (<span class="cmd-arg">640</span>, <span class="cmd-arg">480</span>)}))
+picam2.start()
+
+<span class="cmd-keyword">print</span>(<span class="cmd-string">"비전 창을 종료하려면 'q' 키를 누르세요."</span>)
+
+<span class="cmd-keyword">while</span> <span class="cmd-keyword">True</span>:
+    frame = picam2.capture_array()
+    
+    <span class="cmd-comment"># RGB -> BGR 색상 변환 (OpenCV 표준)</span>
+    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    
+    <span class="cmd-comment"># 화면 안내 텍스트 그리기</span>
+    cv2.putText(frame_bgr, <span class="cmd-string">"AI Robot Master Vision"</span>, (<span class="cmd-arg">20</span>, <span class="cmd-arg">40</span>),
+                cv2.FONT_HERSHEY_SIMPLEX, <span class="cmd-arg">0.8</span>, (<span class="cmd-arg">0</span>, <span class="cmd-arg">255</span>, <span class="cmd-arg">0</span>), <span class="cmd-arg">2</span>)
+    
+    cv2.imshow(<span class="cmd-string">"Camera Vision Window"</span>, frame_bgr)
+    
+    <span class="cmd-keyword">if</span> cv2.waitKey(<span class="cmd-arg">1</span>) & <span class="cmd-arg">0xFF</span> == ord(<span class="cmd-string">'q'</span>):
+        <span class="cmd-keyword">break</span>
+
+cv2.destroyAllWindows()
+picam2.stop()</pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Page Navigation -->
+    <div class="page-nav-bottom">
+      <a href="page2_buildhat_theory.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 2장. BuildHAT 공식이론으로</a>
+      <a href="page4_coral_tpu.html" class="btn-action btn-primary">4장. Coral TPU AI로 이동 <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText.replace(/pi@raspberrypi:[^$]*\$\s*/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>

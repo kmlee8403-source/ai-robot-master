@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3장. Build HAT 이해하기 (하드웨어) - AI 로봇 마스터</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --border-color: #e2e8f0;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background-color: var(--bg-primary); color: var(--text-main); line-height: 1.6; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color); padding: 0.8rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem; text-decoration: none;
+      color: var(--text-main); font-family: var(--font-title); font-weight: 800; font-size: 1.25rem;
+    }
+    .nav-brand i { color: var(--accent-cyan); }
+    .nav-links { display: flex; gap: 1rem; list-style: none; flex-wrap: wrap; }
+    .nav-link {
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      font-weight: 600; padding: 0.4rem 0.7rem; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--accent-cyan); background-color: rgba(56, 189, 248, 0.1); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .page-title-box { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+    .page-title-box h1 { font-size: 2.2rem; font-weight: 800; color: var(--accent-amber); display: flex; align-items: center; gap: 0.8rem; }
+
+    .slides-container {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .slides-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .iframe-wrapper {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 12px; border: 1px solid var(--border-color);
+    }
+    .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+    .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; color: var(--text-main); }
+
+    .theory-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem; margin: 1.25rem 0;
+    }
+    .theory-box {
+      background-color: var(--bg-primary); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .theory-box h4 {
+      color: var(--accent-amber); font-size: 1rem; margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .terminal-wrapper { background-color: var(--bg-terminal); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 1.25rem; }
+    .terminal-header { background-color: #121824; padding: 0.6rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .terminal-title { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-dim); }
+    .copy-btn { background: rgba(255, 255, 255, 0.08); border: none; color: var(--text-muted); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { background-color: var(--accent-amber); color: #0f172a; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+    pre { font-family: var(--font-code); font-size: 0.88rem; line-height: 1.6; color: #e2e8f0; margin: 0; }
+    .cmd-keyword { color: #f472b6; font-weight: 600; }
+    .cmd-comment { color: #64748b; font-style: italic; }
+    .cmd-prompt { color: #10b981; margin-right: 0.5rem; font-weight: 700; }
+
+    .btn-action { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.2rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-amber), #d97706); color: #fff; }
+
+    .page-nav-bottom { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background-color: var(--accent-green); color: #fff; padding: 0.75rem 1.5rem; border-radius: 30px; font-weight: 700; font-size: 0.9rem; opacity: 0; transition: all 0.3s; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">포털 홈</a></li>
+      <li><a href="page1_os_setup.html" class="nav-link">1장. 라즈베리파이 OS</a></li>
+      <li><a href="page2_linux_cmd.html" class="nav-link">2장. 리눅스 명령어</a></li>
+      <li><a href="page3_buildhat_hardware.html" class="nav-link active">3장. Build HAT 이해</a></li>
+      <li><a href="page4_spike_python.html" class="nav-link">4장. 파이썬 LEGO 제어</a></li>
+      <li><a href="page5_vision_coral_ai.html" class="nav-link">5장. 카메라 & Coral AI</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-title-box">
+      <h1><i class="fa-solid fa-gears"></i> 3장. Build HAT 이해하기 (하드웨어)</h1>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">
+        [2강 슬라이드 연동] "LEGO와 파이의 연결 다리" Raspberry Pi Build HAT의 하드웨어 스펙 및 설치 가이드 단원입니다.
+      </p>
+    </div>
+
+    <!-- Slide Deck Section: 2강 -->
+    <section class="slides-container">
+      <div class="slides-header">
+        <h3><i class="fa-solid fa-file-powerpoint" style="color: var(--accent-pink);"></i> 2강. Build HAT 이해하기 (Google Presentation)</h3>
+        <a href="https://docs.google.com/presentation/d/1Yo63sBzCtwQS7PWUbFuSCd8AQ4szEzj_PRZxEKgD7aM/edit?usp=sharing" target="_blank" class="btn-action btn-primary" style="font-size:0.75rem; padding: 0.4rem 0.8rem;">
+          2강 새창으로 보기
+        </a>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe src="https://docs.google.com/presentation/d/1Yo63sBzCtwQS7PWUbFuSCd8AQ4szEzj_PRZxEKgD7aM/embed?start=false&loop=false&delayms=3000" frameborder="0" allowfullscreen="true"></iframe>
+      </div>
+    </section>
+
+    <!-- BuildHAT Tech Deep Dive -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-microchip" style="color: var(--accent-amber);"></i> Build HAT의 핵심 하드웨어 구조
+      </div>
+      <p style="color: var(--text-muted);">
+        Build HAT(Hardware Attached on Top)은 라즈베리파이가 LEGO® Technic™ / SPIKE™ 모터 및 센서를 직접 조작할 수 있도록 신호를 변환해주는 전용 온보드 스마트 확장 보드입니다.
+      </p>
+
+      <div class="theory-grid">
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-brain"></i> 온보드 RP2040 마이크로컨트롤러</h4>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Build HAT 상에는 라즈베리파이 전용 RP2040 칩이 탑재되어 있어, 모터의 실시간 고속 엔코더 펄스 수신 및 PWM 구동 신호를 라즈베리파이 CPU의 부하 없이 독립 처리합니다.
+          </p>
+        </div>
+
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-plug"></i> 8V 4A DC 외부 전원 공급 어댑터</h4>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            LEGO 모터와 고성능 비전/거리 센서는 많은 전력을 소비합니다. Build HAT 전용 8V 어댑터는 모터에는 8V 전원을, 라즈베리파이에는 5V 3A 정전압 전원을 동시에 공급합니다.
+          </p>
+        </div>
+
+        <div class="theory-box">
+          <h4><i class="fa-solid fa-network-wired"></i> 4개 LPF2 포트 & 시리얼 통신</h4>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Port A, B, C, D 4개의 LPF2(LEGO Power Functions v2) 6핀 포트를 탑재하였으며, 라즈베리파이와는 `/dev/ttyAMA0` 하드웨어 UART 시리얼 포트로 전송합니다.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Installation & Device Check -->
+    <article class="card">
+      <div class="card-title">
+        <i class="fa-solid fa-download" style="color: var(--accent-cyan);"></i> buildhat 파이썬 모듈 설치 & 시리얼 디바이스 검증
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">bash - buildhat_install.sh</span>
+          <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre><span class="cmd-comment"># 1) BuildHAT 파이썬 라이브러리 설치</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">sudo</span> pip3 install buildhat
+
+<span class="cmd-comment"># 2) BuildHAT 하드웨어 시리얼 포트 연결 확인</span>
+<span class="cmd-prompt">pi@raspberrypi:~ $</span><span class="cmd-keyword">ls</span> -l /dev/serial*
+
+<span class="cmd-comment"># 정상 출력: /dev/serial0 -> ttyAMA0 심볼릭 링크 확인!</span></pre>
+        </div>
+      </div>
+    </article>
+
+    <!-- Bottom Nav -->
+    <div class="page-nav-bottom">
+      <a href="page2_linux_cmd.html" class="btn-action btn-primary"><i class="fa-solid fa-arrow-left"></i> 2장. 리눅스 명령어 단원으로</a>
+      <a href="page4_spike_python.html" class="btn-action btn-primary">4장. 파이썬 LEGO 제어 단원으로 이동 <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 명령어가 클립보드에 복사되었습니다!</div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.closest('.terminal-wrapper').querySelector('pre');
+      let text = pre.innerText.replace(/pi@raspberrypi:[^$]*\$\s*/g, '');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  </script>
+</body>
+</html>
