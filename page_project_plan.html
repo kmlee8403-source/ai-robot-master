@@ -232,6 +232,43 @@
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     footer { text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+  
+    /* Unified Navigation Button Styles */
+    .btn-nav-link {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.35rem 0.65rem; border-radius: 6px; font-weight: 700;
+      font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;
+      transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-nav-link:hover {
+      border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px);
+    }
+    .btn-nav-link.active-main {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)) !important;
+      color: #ffffff !important; border-color: transparent !important; font-weight: 800;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+    }
+    .btn-nav-link.active-idea {
+      background: rgba(245, 158, 11, 0.2) !important; border-color: var(--accent-amber) !important;
+      color: var(--accent-amber) !important; font-weight: 800;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
+    }
+    .btn-nav-link.active-plan {
+      background: rgba(56, 189, 248, 0.2) !important; border-color: var(--accent-cyan) !important;
+      color: var(--accent-cyan) !important; font-weight: 800;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
+    }
+    .btn-nav-link.active-speech {
+      background: rgba(139, 92, 246, 0.2) !important; border-color: var(--accent-purple) !important;
+      color: var(--accent-purple) !important; font-weight: 800;
+      box-shadow: 0 2px 10px rgba(139, 92, 246, 0.25);
+    }
+    .btn-nav-link.active-theory {
+      background: rgba(16, 185, 129, 0.2) !important; border-color: var(--accent-green) !important;
+      color: var(--accent-green) !important; font-weight: 800;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.25);
+    }
+
   </style>
 </head>
 <body>
@@ -240,9 +277,10 @@
     <div class="header-inner">
       <a href="index.html" class="brand-logo"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
       <div class="nav-group">
-        <a href="index.html" class="btn-nav-link"><i class="fa-solid fa-play"></i> 12단계 실습 플레이어</a>
-        <a href="page_idea_generation.html" class="btn-nav-link"><i class="fa-solid fa-lightbulb"></i> 아이디어 도출 가이드</a>
-        <a href="page_presentation_guide.html" class="btn-nav-link btn-nav-primary"><i class="fa-solid fa-person-chalkboard"></i> 🎤 3분 발표 가이드</a>
+        <a href="index.html" class="btn-nav-link"><i class="fa-solid fa-play"></i> 실습 플레이어</a>
+        <a href="page_idea_generation.html" class="btn-nav-link"><i class="fa-solid fa-lightbulb"></i> 아이디어 도출</a>
+        <a href="page_project_plan.html" class="btn-nav-link active-plan"><i class="fa-solid fa-file-pen"></i> 개발계획서 작성</a>
+        <a href="page_presentation_guide.html" class="btn-nav-link"><i class="fa-solid fa-person-chalkboard"></i> 3분 발표 가이드</a>
         <a href="theory.html" class="btn-nav-link"><i class="fa-solid fa-book-open"></i> 개념 이론 교재</a>
         <button class="theme-toggle-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
       </div>
