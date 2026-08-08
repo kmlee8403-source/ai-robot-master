@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>엣지 AI 개발계획서 템플릿 - AI 로봇 마스터 과정</title>
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-box-inner: rgba(15, 23, 42, 0.6);
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.85);
+      --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+      --card-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      --table-th-bg: rgba(56, 189, 248, 0.15);
+      --table-td-bg: rgba(15, 23, 42, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-box-inner: #f8fafc;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #334155;
+      --text-dim: #64748b;
+      --border-color: #cbd5e1;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      --accent-cyan: #0284c7;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --accent-pink: #db2777;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --card-gradient: linear-gradient(135deg, #ffffff, #f1f5f9);
+      --table-th-bg: rgba(2, 132, 199, 0.12);
+      --table-td-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .brand-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-family: var(--font-title); font-weight: 800; font-size: 1.2rem;
+      color: var(--text-main); text-decoration: none;
+    }
+    .brand-logo i { color: var(--accent-cyan); font-size: 1.4rem; }
+
+    .nav-group { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
+    .btn-nav-link {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700;
+      font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-nav-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px); }
+
+    .btn-nav-primary {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #fff; border: none;
+    }
+    .btn-nav-primary:hover { color: #fff; transform: translateY(-1px); }
+
+    .theme-toggle-btn {
+      background: none; border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.45rem 0.8rem; border-radius: 8px;
+      cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .container { max-width: 1050px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .hero-banner {
+      background: var(--card-gradient); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .hero-title { font-size: 2.2rem; font-weight: 900; color: var(--accent-cyan); margin-bottom: 0.8rem; }
+    .hero-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 850px; margin: 0 auto; line-height: 1.6; }
+
+    .section-card {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 2.2rem; margin-bottom: 2.2rem; box-shadow: var(--shadow-lg);
+    }
+
+    .section-title {
+      font-size: 1.4rem; font-weight: 800; color: var(--text-main);
+      display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-label {
+      display: block; font-size: 1rem; font-weight: 800; color: var(--accent-cyan);
+      margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%; background-color: var(--bg-box-inner); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 0.8rem 1.1rem; color: var(--text-main);
+      font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.6;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none; border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .form-textarea { min-height: 110px; resize: vertical; }
+
+    .grid-2col {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem;
+    }
+
+    .data-table-wrapper { overflow-x: auto; margin: 1rem 0; border-radius: 12px; border: 1px solid var(--border-color); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; }
+    .data-table th {
+      background-color: var(--table-th-bg); color: var(--accent-cyan);
+      padding: 0.8rem 1.1rem; font-weight: 800; border-bottom: 1px solid var(--border-color);
+    }
+    .data-table td {
+      padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted); background-color: var(--table-td-bg);
+    }
+
+    .checkbox-list { list-style: none; }
+    .checkbox-item {
+      display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.8rem 1rem;
+      background-color: var(--bg-box-inner); border: 1px solid var(--border-color);
+      border-radius: 10px; margin-bottom: 0.6rem; font-size: 0.93rem; color: var(--text-main);
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 0.2rem; accent-color: var(--accent-green); cursor: pointer;
+    }
+
+    .action-row {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;
+    }
+
+    .btn-action-lg {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; border: none; transition: all 0.25s; text-decoration: none;
+    }
+
+    .btn-copy-prompt {
+      background: linear-gradient(135deg, var(--accent-green), #059669); color: #fff;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+    }
+    .btn-copy-prompt:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4); }
+
+    .btn-reset-form {
+      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
+    }
+    .btn-reset-form:hover { border-color: var(--accent-pink); color: var(--accent-pink); }
+
+    .terminal-wrapper {
+      background-color: var(--bg-terminal); border-radius: 14px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-top: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .terminal-header {
+      background-color: #121824; padding: 0.7rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .terminal-title { font-family: var(--font-code); font-size: 0.8rem; color: #94a3b8; }
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+
+    pre {
+      font-family: var(--font-code); font-size: 0.9rem; line-height: 1.6;
+      color: #f8fafc; margin: 0; white-space: pre-wrap; word-break: break-all;
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent-green); color: #fff; padding: 0.8rem 1.8rem; border-radius: 30px;
+      font-weight: 700; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+      opacity: 0; transition: all 0.3s; z-index: 10000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    footer { text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+      <div class="nav-group">
+        <a href="index.html" class="btn-nav-link"><i class="fa-solid fa-play"></i> 12단계 실습 플레이어</a>
+        <a href="page_idea_generation.html" class="btn-nav-link"><i class="fa-solid fa-lightbulb"></i> 아이디어 도출 가이드</a>
+        <a href="theory.html" class="btn-nav-link"><i class="fa-solid fa-book-open"></i> 개념 이론 교재</a>
+        <button class="theme-toggle-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="hero-banner">
+      <h1 class="hero-title"><i class="fa-solid fa-file-pen"></i> 📝 엣지 AI 개발계획서 템플릿</h1>
+      <p class="hero-subtitle">
+        여러분의 팀 아이디어를 1페이지 양식에 맞춰 작성해보세요! 작성 완료 후 버튼을 클릭하면 안티그래비티(AI 코딩 도구)에 직접 제출할 수 있는 맞춤형 파이썬 코드 생성 프롬프트로 자동 변환됩니다.
+      </p>
+    </div>
+
+    <!-- INTERACTIVE FORM SECTION -->
+    <section class="section-card">
+      <div class="section-title">
+        <span><i class="fa-solid fa-id-card" style="color: var(--accent-cyan);"></i> 프로젝트 기본 정보</span>
+        <span style="font-size:0.85rem; font-weight:700; color:var(--accent-green);"><i class="fa-solid fa-pen-to-square"></i> 직접 수정 가능</span>
+      </div>
+
+      <div class="grid-2col" style="margin-bottom: 1.5rem;">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-crown"></i> 프로젝트명 / 팀명</label>
+          <input type="text" class="form-input" id="projectName" value="스마트 AI 자동 분리수거 로봇 (팀명: 그린로봇)" placeholder="프로젝트명과 팀명을 입력하세요">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-calendar"></i> 작성일</label>
+          <input type="text" class="form-input" id="projectDate" value="2026년 08월 09일" placeholder="작성일을 입력하세요">
+        </div>
+      </div>
+
+      <!-- SECTION 1: PROBLEM DEFINITION -->
+      <div class="section-title">
+        <span><i class="fa-solid fa-circle-question" style="color: var(--accent-amber);"></i> 1. 해결하고 싶은 문제 (Problem)</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-circle-exclamation"></i> 현재 상황 (어떤 문제가 있나요?)</label>
+        <textarea class="form-textarea" id="problemCurrent">학교 매점에서 분리수거가 잘 되지 않아 플라스틱, 캔, 일반 쓰레기가 한곳에 섞여 버려지는 불편함이 발생함.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-wand-magic"></i> 원하는 결과 (AI가 어떻게 해결하나요?)</label>
+        <textarea class="form-textarea" id="problemGoal">라즈베리파이 카메라가 버리려는 쓰레기를 자동으로 구별하여 해당 종류(페트병 / 캔)에 맞는 수거함 뚜껑을 레고 모터로 열어준다.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-brain"></i> 왜 단순 코딩(if-else)이 아니라 AI가 필요한가요?</label>
+        <textarea class="form-textarea" id="problemWhyAI">페트병의 모양, 찌그러진 정도, 라벨 색상, 브랜드 형태가 제각각이라 일반 센서나 단순 조건문으로는 구분하기 힘들고 비전 AI 이미지 패턴 인식이 필수적이기 때문이다.</textarea>
+      </div>
+
+      <!-- SECTION 2: HARDWARE ENVIRONMENT -->
+      <div class="section-title">
+        <span><i class="fa-solid fa-microchip" style="color: var(--accent-purple);"></i> 2. 사용할 장비 및 환경 (Hardware)</span>
+      </div>
+
+      <div class="grid-2col" style="margin-bottom: 1.5rem;">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-memory"></i> 메인 보드 & AI 가속기</label>
+          <input type="text" class="form-input" id="hwBoard" value="Raspberry Pi 4B (4GB) + Google Coral TPU USB Accelerator">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-camera"></i> 입력 장치 (센서 / 카메라)</label>
+          <input type="text" class="form-input" id="hwInput" value="Raspberry Pi Camera V2, BuildHAT 거리 센서 (초음파)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-gears"></i> 출력 장치 (모터 / 디스플레이 등)</label>
+        <input type="text" class="form-input" id="hwOutput" value="BuildHAT + 레고 SPIKE 모터 2개 (수거함 문 열기용)">
+      </div>
+
+      <!-- SECTION 3: FEATURES (MUST vs NICE) -->
+      <div class="section-title">
+        <span><i class="fa-solid fa-layer-group" style="color: var(--accent-green);"></i> 3. 개발 기능 목록 (Features)</span>
+      </div>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 15%;">구분</th>
+              <th style="width: 60%;">기능 내용</th>
+              <th style="width: 25%;">비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="color:var(--accent-pink); font-weight:800;">필수 (Must)</span></td>
+              <td><input type="text" class="form-input" id="featMust1" value="카메라 영상 받기 ➔ Coral TPU 실시간 추론 ➔ BuildHAT 레고 모터 구동"></td>
+              <td>기본 메인 제어 루프</td>
+            </tr>
+            <tr>
+              <td><span style="color:var(--accent-pink); font-weight:800;">필수 (Must)</span></td>
+              <td><input type="text" class="form-input" id="featMust2" value="이미지 분류 모델 (페트병 / 캔 / 기타 3종류 분류)"></td>
+              <td>TFLite Quantized 모델</td>
+            </tr>
+            <tr>
+              <td><span style="color:var(--accent-cyan); font-weight:800;">추가 (Nice)</span></td>
+              <td><input type="text" class="form-input" id="featNice" value="쓰레기 접근 시 거리 센서로 감지하여 카메라 LED 조명 자동 켜기"></td>
+              <td>시간 남을 때 구현</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SECTION 4: SUCCESS METRICS -->
+      <div class="section-title">
+        <span><i class="fa-solid fa-square-check" style="color: var(--accent-pink);"></i> 4. 성공 평가 기준 (Success Metrics)</span>
+      </div>
+
+      <ul class="checkbox-list">
+        <li class="checkbox-item">
+          <input type="checkbox" id="metric1" checked>
+          <label for="metric1"><strong>[ ] 반응 속도</strong>: 카메라에 물체를 비춘 후 <strong>2초 이내</strong>에 결과판별 및 모터 구동이 실행되어야 함</label>
+        </li>
+        <li class="checkbox-item">
+          <input type="checkbox" id="metric2" checked>
+          <label for="metric2"><strong>[ ] 정확도</strong>: 20번의 테스트 중 <strong>16번 이상(80% 이상)</strong> 정확히 분류해야 함</label>
+        </li>
+        <li class="checkbox-item">
+          <input type="checkbox" id="metric3" checked>
+          <label for="metric3"><strong>[ ] 안정성</strong>: 라즈베리파이가 다운되거나 튕기지 않고 연속으로 <strong>10회 이상</strong> 정상 작동해야 함</label>
+        </li>
+      </ul>
+
+      <!-- ACTION BUTTONS -->
+      <div class="action-row">
+        <button class="btn-action-lg btn-copy-prompt" onclick="generateAndCopyPrompt()">
+          <i class="fa-solid fa-copy"></i> 📋 안티그래비티 제출용 프롬프트로 전체 복사
+        </button>
+        <button class="btn-action-lg btn-reset-form" onclick="updatePreview()">
+          <i class="fa-solid fa-arrows-rotate"></i> 프롬프트 미리보기 갱신
+        </button>
+      </div>
+
+      <!-- GENERATED PROMPT PREVIEW -->
+      <div style="margin-top: 2rem;">
+        <div class="form-label"><i class="fa-solid fa-terminal"></i> 안티그래비티 제출용 자동 생성 프롬프트 미리보기</div>
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">Generated Prompt for Antigravity AI Tool</span>
+            <button class="copy-btn" onclick="generateAndCopyPrompt()"><i class="fa-regular fa-copy"></i> 복사하기</button>
+          </div>
+          <div class="terminal-body">
+            <pre id="promptPreviewText"></pre>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <footer>
+      <p>© 2026 AI 로봇 마스터 교육 과정 | 학생용 엣지 AI 개발계획서 템플릿</p>
+    </footer>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 안티그래비티 코딩용 프롬프트가 복사되었습니다!</div>
+
+  <script>
+    // Theme Toggle
+    const themeBtn = document.getElementById('themeToggleBtn');
+    let isDark = true;
+    themeBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      }
+    });
+
+    // Update Prompt Preview
+    function updatePreview() {
+      const pName = document.getElementById('projectName').value;
+      const pDate = document.getElementById('projectDate').value;
+      const pCurr = document.getElementById('problemCurrent').value;
+      const pGoal = document.getElementById('problemGoal').value;
+      const pWhy  = document.getElementById('problemWhyAI').value;
+      const hwB   = document.getElementById('hwBoard').value;
+      const hwI   = document.getElementById('hwInput').value;
+      const hwO   = document.getElementById('hwOutput').value;
+      const fM1   = document.getElementById('featMust1').value;
+      const fM2   = document.getElementById('featMust2').value;
+      const fN    = document.getElementById('featNice').value;
+
+      const promptText = `📝 [${pName}] 엣지 AI 로봇 개발 계획서
+
+작성일: ${pDate}
+
+1. 해결하고 싶은 문제 (Problem)
+- 현재 상황: ${pCurr}
+- 원하는 결과: ${pGoal}
+- 왜 단순 코딩이 아니라 AI가 필요한가: ${pWhy}
+
+2. 사용할 장비 및 환경 (Hardware)
+- 메인 보드 & AI 가속기: ${hwB}
+- 입력 장치 (카메라/센서): ${hwI}
+- 출력 장치 (모터/디스플레이): ${hwO}
+- OS & 라이브러리: Raspberry Pi OS Bullseye 32bit, PyCoral, OpenCV, buildhat
+
+3. 개발 기능 목록 (Features)
+- 필수 기능 (Must Have 1): ${fM1}
+- 필수 기능 (Must Have 2): ${fM2}
+- 추가 기능 (Nice to Have): ${fN}
+
+4. 성공 평가 기준 (Success Metrics)
+[v] 반응 속도: 물체 비춘 후 2초 이내 결과 반환 및 모터 동작
+[v] 정확도: 20회 테스트 중 16회 이상(80% 이상) 정확 판별
+[v] 안정성: 다운 없이 연속 10회 이상 정상 구동
+
+위 프로젝트 계획서 내용에 따라, 라즈베리파이에서 바로 실행할 수 있는 완성형 파이썬(Python) 코드를 작성해 줘. (PyCoral + buildhat 라이브러리 사용)`;
+
+      document.getElementById('promptPreviewText').innerText = promptText;
+      return promptText;
+    }
+
+    function generateAndCopyPrompt() {
+      const text = updatePreview();
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+
+    // Initial load
+    updatePreview();
+  </script>
+</body>
+</html>
