@@ -242,6 +242,7 @@
       <div class="nav-group">
         <a href="index.html" class="btn-nav-link"><i class="fa-solid fa-play"></i> 12단계 실습 플레이어</a>
         <a href="page_idea_generation.html" class="btn-nav-link"><i class="fa-solid fa-lightbulb"></i> 아이디어 도출 가이드</a>
+        <a href="page_presentation_guide.html" class="btn-nav-link btn-nav-primary"><i class="fa-solid fa-person-chalkboard"></i> 🎤 3분 발표 가이드</a>
         <a href="theory.html" class="btn-nav-link"><i class="fa-solid fa-book-open"></i> 개념 이론 교재</a>
         <button class="theme-toggle-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
       </div>
@@ -253,7 +254,7 @@
     <div class="hero-banner">
       <h1 class="hero-title"><i class="fa-solid fa-file-pen"></i> 📝 엣지 AI 개발계획서 템플릿</h1>
       <p class="hero-subtitle">
-        여러분의 팀 아이디어를 1페이지 양식에 맞춰 작성해보세요! 작성 완료 후 버튼을 클릭하면 안티그래비티(AI 코딩 도구)에 직접 제출할 수 있는 맞춤형 파이썬 코드 생성 프롬프트로 자동 변환됩니다.
+        복잡한 레고 조립 없이 2~3시간 만에 완성할 수 있는 팀 프로젝트 계획서를 작성해보세요! 버튼 클릭 한 번에 안티그래비티(AI 코딩 도구) 파이썬 코드 생성 프롬프트로 변환됩니다.
       </p>
     </div>
 
@@ -270,8 +271,8 @@
           <input type="text" class="form-input" id="projectName" value="스마트 AI 자동 분리수거 로봇 (팀명: 그린로봇)" placeholder="프로젝트명과 팀명을 입력하세요">
         </div>
         <div class="form-group">
-          <label class="form-label"><i class="fa-solid fa-calendar"></i> 작성일</label>
-          <input type="text" class="form-input" id="projectDate" value="2026년 08월 09일" placeholder="작성일을 입력하세요">
+          <label class="form-label"><i class="fa-solid fa-calendar"></i> 작성일 및 개발시간</label>
+          <input type="text" class="form-input" id="projectDate" value="2026년 08월 09일 (개발 제한시간: 2~3시간)" placeholder="작성일을 입력하세요">
         </div>
       </div>
 
@@ -334,7 +335,7 @@
             <tr>
               <td><span style="color:var(--accent-pink); font-weight:800;">필수 (Must)</span></td>
               <td><input type="text" class="form-input" id="featMust1" value="카메라 영상 받기 ➔ Coral TPU 실시간 추론 ➔ BuildHAT 레고 모터 구동"></td>
-              <td>기본 메인 제어 루프</td>
+              <td>2~3시간 개발 메인 루프</td>
             </tr>
             <tr>
               <td><span style="color:var(--accent-pink); font-weight:800;">필수 (Must)</span></td>
@@ -366,7 +367,7 @@
         </li>
         <li class="checkbox-item">
           <input type="checkbox" id="metric3" checked>
-          <label for="metric3"><strong>[ ] 안정성</strong>: 라즈베리파이가 다운되거나 튕기지 않고 연속으로 <strong>10회 이상</strong> 정상 작동해야 함</label>
+          <label for="metric3"><strong>[ ] 안정성</strong>: 라즈베리파이가 다운되지 않고 연속으로 <strong>10회 이상</strong> 정상 작동해야 함</label>
         </li>
       </ul>
 
@@ -448,7 +449,7 @@
 - 출력 장치 (모터/디스플레이): ${hwO}
 - OS & 라이브러리: Raspberry Pi OS Bullseye 32bit, PyCoral, OpenCV, buildhat
 
-3. 개발 기능 목록 (Features)
+3. 개발 기능 목록 (Features - 2~3시간 개발)
 - 필수 기능 (Must Have 1): ${fM1}
 - 필수 기능 (Must Have 2): ${fM2}
 - 추가 기능 (Nice to Have): ${fN}
@@ -458,7 +459,7 @@
 [v] 정확도: 20회 테스트 중 16회 이상(80% 이상) 정확 판별
 [v] 안정성: 다운 없이 연속 10회 이상 정상 구동
 
-위 프로젝트 계획서 내용에 따라, 라즈베리파이에서 바로 실행할 수 있는 완성형 파이썬(Python) 코드를 작성해 줘. (PyCoral + buildhat 라이브러리 사용)`;
+위 프로젝트 계획서 내용에 따라, 안티그래비티 코딩 도구를 통해 라즈베리파이에서 바로 실행할 수 있는 완성형 파이썬(Python) 코드를 작성해 줘. (PyCoral + buildhat 라이브러리 사용)`;
 
       document.getElementById('promptPreviewText').innerText = promptText;
       return promptText;

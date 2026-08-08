@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3분 발표 가이드 - AI 로봇 마스터 과정</title>
+  
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Fira+Code:wght@400;600&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-box-inner: rgba(15, 23, 42, 0.6);
+      --bg-terminal: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-cyan: #38bdf8;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --border-color: #334155;
+      --glass-bg: rgba(30, 41, 59, 0.85);
+      --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --font-sans: 'Noto Sans KR', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --font-title: 'Outfit', 'Noto Sans KR', sans-serif;
+      --card-gradient: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      --table-th-bg: rgba(56, 189, 248, 0.15);
+      --table-td-bg: rgba(15, 23, 42, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-box-inner: #f8fafc;
+      --bg-terminal: #1e293b;
+      --text-main: #0f172a;
+      --text-muted: #334155;
+      --text-dim: #64748b;
+      --border-color: #cbd5e1;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      --accent-cyan: #0284c7;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --accent-pink: #db2777;
+      --accent-green: #059669;
+      --accent-amber: #d97706;
+      --card-gradient: linear-gradient(135deg, #ffffff, #f1f5f9);
+      --table-th-bg: rgba(2, 132, 199, 0.12);
+      --table-td-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.8rem 2rem;
+    }
+
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .brand-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-family: var(--font-title); font-weight: 800; font-size: 1.2rem;
+      color: var(--text-main); text-decoration: none;
+    }
+    .brand-logo i { color: var(--accent-cyan); font-size: 1.4rem; }
+
+    .nav-group { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
+    .btn-nav-link {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700;
+      font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-nav-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px); }
+
+    .btn-nav-primary {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #fff; border: none;
+    }
+    .btn-nav-primary:hover { color: #fff; transform: translateY(-1px); }
+
+    .theme-toggle-btn {
+      background: none; border: 1px solid var(--border-color);
+      color: var(--text-main); padding: 0.45rem 0.8rem; border-radius: 8px;
+      cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .container { max-width: 1050px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .hero-banner {
+      background: var(--card-gradient); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .hero-title { font-size: 2.2rem; font-weight: 900; color: var(--accent-cyan); margin-bottom: 0.8rem; }
+    .hero-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 850px; margin: 0 auto; line-height: 1.6; }
+
+    .section-card {
+      background-color: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 2.2rem; margin-bottom: 2.2rem; box-shadow: var(--shadow-lg);
+    }
+
+    .section-title {
+      font-size: 1.4rem; font-weight: 800; color: var(--text-main);
+      display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem; border-bottom: 1px solid var(--border-color); flex-wrap: wrap;
+    }
+
+    .speech-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem;
+    }
+
+    .speech-card-item {
+      background-color: var(--bg-box-inner); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 1.4rem; transition: transform 0.2s, border-color 0.2s;
+    }
+    .speech-card-item:hover { transform: translateY(-2px); border-color: var(--accent-cyan); }
+
+    .speech-card-num {
+      width: 36px; height: 36px; border-radius: 10px; background: rgba(56,189,248,0.15);
+      color: var(--accent-cyan); font-weight: 900; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 0.8rem;
+    }
+
+    .speech-card-title { font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; }
+    .speech-card-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+    .form-group { margin-bottom: 1.5rem; }
+
+    .form-label {
+      display: block; font-size: 1rem; font-weight: 800; color: var(--accent-cyan);
+      margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .form-textarea {
+      width: 100%; background-color: var(--bg-box-inner); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 0.8rem 1.1rem; color: var(--text-main);
+      font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.6; min-height: 100px; resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-textarea:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 12px rgba(56, 189, 248, 0.25); }
+
+    .action-row {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem;
+    }
+
+    .btn-action-lg {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; border-radius: 12px; font-size: 1rem; font-weight: 800;
+      cursor: pointer; border: none; transition: all 0.25s; text-decoration: none;
+    }
+
+    .btn-copy-script {
+      background: linear-gradient(135deg, var(--accent-green), #059669); color: #fff;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+    }
+    .btn-copy-script:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4); }
+
+    .terminal-wrapper {
+      background-color: var(--bg-terminal); border-radius: 14px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-top: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .terminal-header {
+      background-color: #121824; padding: 0.7rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .terminal-title { font-family: var(--font-code); font-size: 0.8rem; color: #94a3b8; }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1); border: none; color: #cbd5e1;
+      padding: 0.35rem 0.88rem; border-radius: 6px; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
+    }
+
+    .copy-btn:hover { background-color: var(--accent-cyan); color: #0f172a; }
+
+    .terminal-body { padding: 1.2rem; overflow-x: auto; }
+
+    pre {
+      font-family: var(--font-code); font-size: 0.9rem; line-height: 1.6;
+      color: #f8fafc; margin: 0; white-space: pre-wrap; word-break: break-all;
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+      background-color: var(--accent-green); color: #fff; padding: 0.8rem 1.8rem; border-radius: 30px;
+      font-weight: 700; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+      opacity: 0; transition: all 0.3s; z-index: 10000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    footer { text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand-logo"><i class="fa-solid fa-robot"></i> AI Robot Master</a>
+      <div class="nav-group">
+        <a href="index.html" class="btn-nav-link"><i class="fa-solid fa-play"></i> 12단계 실습 플레이어</a>
+        <a href="page_idea_generation.html" class="btn-nav-link"><i class="fa-solid fa-lightbulb"></i> 아이디어 도출 가이드</a>
+        <a href="page_project_plan.html" class="btn-nav-link"><i class="fa-solid fa-file-pen"></i> 개발계획서 작성</a>
+        <a href="theory.html" class="btn-nav-link"><i class="fa-solid fa-book-open"></i> 개념 이론 교재</a>
+        <button class="theme-toggle-btn" id="themeToggleBtn"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="hero-banner">
+      <h1 class="hero-title"><i class="fa-solid fa-person-chalkboard"></i> 🎤 3분 발표 가이드 & 대본 준비 템플릿</h1>
+      <p class="hero-subtitle">
+        마지막 시간은 우리가 만든 엣지 AI 로봇을 세상에 소개하는 발표 시간입니다! 4가지 핵심 질문에 따라 3분 스피치 대본을 준비하고 동료들과 성과를 공유해보세요.
+      </p>
+    </div>
+
+    <!-- SECTION 1: 4 CORE PRESENTATION QUESTIONS -->
+    <section class="section-card">
+      <h2 class="section-title">
+        <span><i class="fa-solid fa-list-check" style="color: var(--accent-cyan);"></i> 발표할 핵심 내용 4가지</span>
+        <span style="font-size:0.85rem; font-weight:700; color:var(--accent-amber);"><i class="fa-solid fa-stopwatch"></i> 발표 시간: 팀당 3분</span>
+      </h2>
+
+      <div class="speech-grid">
+        
+        <!-- Q1 -->
+        <div class="speech-card-item">
+          <div class="speech-card-num">1</div>
+          <div class="speech-card-title"><i class="fa-solid fa-robot" style="color:var(--accent-cyan);"></i> 이 프로젝트는 무엇인가?</div>
+          <p class="speech-card-desc">
+            팀이 만든 AI 로봇의 명칭과 한 문장 정의를 소개합니다.<br>
+            (예: "우리 팀이 만든 로봇은 매점 쓰레기를 자동으로 구별해주는 '스마트 분리수거 AI 로봇'입니다.")
+          </p>
+        </div>
+
+        <!-- Q2 -->
+        <div class="speech-card-item">
+          <div class="speech-card-num">2</div>
+          <div class="speech-card-title"><i class="fa-solid fa-heart-crack" style="color:var(--accent-pink);"></i> 왜 이것을 만들었는가?</div>
+          <p class="speech-card-desc">
+            일상이나 학교에서 느낀 불편함(현재 상황)과 AI가 해결해준 방식(원하는 결과)을 이야기합니다.<br>
+            (예: "매점에서 플라스틱과 캔이 섞여 버려지는 문제를 해결하고 싶었습니다.")
+          </p>
+        </div>
+
+        <!-- Q3 -->
+        <div class="speech-card-item">
+          <div class="speech-card-num">3</div>
+          <div class="speech-card-title"><i class="fa-solid fa-microchip" style="color:var(--accent-purple);"></i> 어떤 기술이 적용되었는가?</div>
+          <p class="speech-card-desc">
+            하드웨어(라즈베리파이, BuildHAT, 레고 모터/센서, Google Coral TPU)와 소프트웨어(OpenCV, PyCoral, 안티그래비티 AI 코딩)를 설명합니다.
+          </p>
+        </div>
+
+        <!-- Q4 -->
+        <div class="speech-card-item">
+          <div class="speech-card-num">4</div>
+          <div class="speech-card-title"><i class="fa-solid fa-rocket" style="color:var(--accent-green);"></i> 향후 어떻게 발전시킬 수 있는가?</div>
+          <p class="speech-card-desc">
+            실제 매점/교실 적용 방안이나 모터/센서 추가 확장 아이디어를 제안합니다.<br>
+            (예: "더 많은 쓰레기 종류 학습 및 LCD 상태 표시창 추가 예정")
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: INTERACTIVE SPEECH SCRIPT TEMPLATE -->
+    <section class="section-card">
+      <div class="section-title">
+        <span><i class="fa-solid fa-pen-nib" style="color: var(--accent-amber);"></i> 🎤 3분 발표 대본 작성 양식</span>
+        <span style="font-size:0.85rem; font-weight:700; color:var(--accent-green);"><i class="fa-solid fa-pen-to-square"></i> 직접 입력 가능</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-star"></i> 1) [오프닝 & 프로젝트 소개] (약 30초)</label>
+        <textarea class="form-textarea" id="scriptQ1">안녕하세요! 저희 팀이 만든 프로젝트는 라즈베리파이와 Google Coral TPU, 레고 부품을 활용한 '스마트 AI 분리수거 로봇'입니다.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-lightbulb"></i> 2) [개발 동기 및 문제 해결] (약 45초)</label>
+        <textarea class="form-textarea" id="scriptQ2">저희는 매점에서 분리수거가 잘 되지 않는 불편함을 해결하기 위해 이 로봇을 제작했습니다. 페트병과 캔의 다양한 모양을 카메라 비전 AI로 자동 구분하도록 만들었습니다.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-code"></i> 3) [적용 기술 및 안티그래비티 활용] (약 1분)</label>
+        <textarea class="form-textarea" id="scriptQ3">이 로봇에는 라즈베리파이 4B와 딥러닝 가속기인 Google Coral TPU, BuildHAT 모터 및 초음파 거리 센서가 적용되었습니다. 안티그래비티 AI 코딩 도구를 활용해 실시간 30+ FPS 카메라 추론 알고리즘을 구현했습니다.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-flag-checkered"></i> 4) [향후 발전 방향 & 클로징] (약 45초)</label>
+        <textarea class="form-textarea" id="scriptQ4">향후에는 분리수거 분류 종류를 10가지로 늘리고, 쓰레기통 차오름을 센서로 감지해 스마트폰 알림을 보내는 시스템으로 발전시킬 계획입니다. 들어주셔서 감사합니다!</textarea>
+      </div>
+
+      <!-- ACTION ROW -->
+      <div class="action-row">
+        <button class="btn-action-lg btn-copy-script" onclick="generateAndCopyScript()">
+          <i class="fa-solid fa-copy"></i> 📋 3분 발표 대본 전체 복사하기
+        </button>
+      </div>
+
+      <!-- GENERATED SCRIPT PREVIEW -->
+      <div style="margin-top: 2rem;">
+        <div class="form-label"><i class="fa-solid fa-scroll"></i> 완성된 3분 발표 대본 미리보기</div>
+        <div class="terminal-wrapper">
+          <div class="terminal-header">
+            <span class="terminal-title">Presentation Script Preview</span>
+            <button class="copy-btn" onclick="generateAndCopyScript()"><i class="fa-regular fa-copy"></i> 복사하기</button>
+          </div>
+          <div class="terminal-body">
+            <pre id="scriptPreviewText"></pre>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 3: ANTiGRAVITY PROMPT FOR PPT/SCRIPT CREATION -->
+    <section class="section-card">
+      <h2 class="section-title"><i class="fa-solid fa-robot" style="color: var(--accent-pink);"></i> 안티그래비티 도구에 발표 대본 요청 프롬프트</h2>
+      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1rem;">
+        작성한 개발계획서를 안티그래비티 AI 도구에 주고 "발표 대본과 PPT 슬라이드 목차를 짜줘!"라고 요청하면 발표 준비가 1분 만에 끝납니다.
+      </p>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <span class="terminal-title">Prompt for Generating Speech Script via Antigravity</span>
+          <button class="copy-btn" onclick="copyPromptText()"><i class="fa-regular fa-copy"></i> 프롬프트 복사</button>
+        </div>
+        <div class="terminal-body">
+          <pre id="promptForScript">내가 안티그래비티로 개발한 [프로젝트명] 엣지 AI 로봇 프로젝트의 3분 발표 대본과 PPT 슬라이드 목차를 작성해 줘.
+
+발표에 포함할 내용 4가지:
+1. 이 프로젝트는 무엇인지? (프로젝트명 및 한 문장 요약)
+2. 왜 이것을 만들었는지? (일상/학교의 불편함과 개발 동기)
+3. 이 프로젝트에 적용된 기술은 어떤 것인지? (라즈베리파이, BuildHAT, 레고 모터/센서, Coral TPU, OpenCV, PyCoral)
+4. 향후 어떻게 발전시킬 수 있을지? (실제 학교 적용 방안 및 기능 확장)
+
+위 4가지 목차에 따라 고등학생이 3분 동안 시연과 함께 발표할 수 있는 자연스러운 발표 대본을 만들어 줘.</pre>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 AI 로봇 마스터 교육 과정 | 학생용 3분 발표 가이드</p>
+    </footer>
+
+  </div>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i> 발표 대본이 클립보드에 복사되었습니다!</div>
+
+  <script>
+    // Theme Toggle
+    const themeBtn = document.getElementById('themeToggleBtn');
+    let isDark = true;
+    themeBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      }
+    });
+
+    // Script Preview Generator
+    function updateScriptPreview() {
+      const q1 = document.getElementById('scriptQ1').value;
+      const q2 = document.getElementById('scriptQ2').value;
+      const q3 = document.getElementById('scriptQ3').value;
+      const q4 = document.getElementById('scriptQ4').value;
+
+      const fullScript = `🎤 [3분 발표 대본] AI 로봇 프로젝트 발표
+
+1. [프로젝트 소개]
+${q1}
+
+2. [개발 동기 및 문제 해결]
+${q2}
+
+3. [적용 기술 및 안티그래비티 활용]
+${q3}
+
+4. [향후 발전 방향 & 클로징]
+${q4}`;
+
+      document.getElementById('scriptPreviewText').innerText = fullScript;
+      return fullScript;
+    }
+
+    function generateAndCopyScript() {
+      const text = updateScriptPreview();
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = '발표 대본이 클립보드에 복사되었습니다!';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+
+    function copyPromptText() {
+      const text = document.getElementById('promptForScript').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.innerText = '발표대본 생성용 프롬프트가 복사되었습니다!';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+
+    // Initial load
+    updateScriptPreview();
+  </script>
+</body>
+</html>
